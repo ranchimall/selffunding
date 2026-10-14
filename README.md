@@ -1,6 +1,8 @@
 # SelfFundingBlockchainSystems
 Paradigm Capital Frontiers 2026 hackathon project
 
+# Access the webpage here: [https://ranchimall.github.io/sfbs]
+
 # Building a Self-Funding Economy with AI and Blockchain
 
 Our project explores how **AI, blockchain, and digital consumption** can work together to build a self-funding economy.
