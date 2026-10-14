@@ -13,7 +13,7 @@ Enable users to transact across different blockchains through a unified wallet e
 
 - **Proof of Concept:** Dogecoin → Solana
 - **Status:** Built
-- **Link:** [https://ranchimall.github.io/solanawallet/#/buy]
+- **Link:** [https://ranchimall.github.io/dogewallet]
 
 ## 2. Self-Funding Metrics
 
