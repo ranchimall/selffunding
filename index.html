@@ -317,6 +317,9 @@ h1{font:700 clamp(30px,5vw,46px)/1.08 var(--head);letter-spacing:-.02em;margin:0
 .pipe-rail{display:flex;align-items:stretch;gap:6px}
 .pipe-rail .pipe-stage{flex:1 1 0;min-width:0;text-align:center;padding:10px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center}
 .pipe-rail .pipe-stage .pipe-status{margin-top:6px}
+.pipe-numbers{margin:2px 0;font-size:11px;letter-spacing:-0.015em;display:flex;flex-wrap:wrap;justify-content:center;align-items:center;gap:1px 5px;line-height:1.35}
+.pipe-num-part{white-space:nowrap}
+@media(max-width:1120px) and (min-width:721px){.pipe-num-sep{display:none}}
 .pipe-rail .pipeline-arrow{align-self:center;flex:0 0 auto;font-size:22px;font-weight:700;line-height:1;color:var(--line);text-align:center}
 .pipe-rail .pipeline-arrow span{display:inline-block;transition:transform .3s ease}
 .pipe-play{all:unset;cursor:pointer;width:34px;height:34px;border-radius:50%;background:var(--attention);color:#FFFFFF;display:inline-flex;align-items:center;justify-content:center;flex:0 0 34px;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:transform .15s ease,opacity .15s;box-sizing:border-box}
@@ -634,19 +637,19 @@ h1{font:700 clamp(30px,5vw,46px)/1.08 var(--head);letter-spacing:-.02em;margin:0
     <div id="pipeline-visual" class="pipe-rail">
       <div id="pipe-stage-attention" class="metric-box pipe-stage" style="border-top: 3.5px solid var(--attention);">
           <b>1. Attention</b>
-          <p id="pipe-attn-numbers" style="margin: 2px 0; font-size: 12px;" hidden>Score: <span id="pipe-attn-score">-</span> | Cutoff: <span id="pipe-attn-cutoff">-</span></p>
+          <p id="pipe-attn-numbers" class="pipe-numbers" hidden><span class="pipe-num-part">Score achieved: <span id="pipe-attn-score">-</span></span> <span class="pipe-num-sep">|</span> <span class="pipe-num-part">Passing score: <span id="pipe-attn-cutoff">-</span></span></p>
           <span id="pipe-attn-status" class="pipe-status">Pending</span>
       </div>
       <div class="pipeline-arrow" id="arrow-1" style="color: var(--line);"><span>→</span></div>
       <div id="pipe-stage-consumption" class="metric-box pipe-stage" style="border-top: 3.5px solid var(--consumption); opacity: 0.4;">
           <b>2. Consumption</b>
-          <p id="pipe-cons-numbers" style="margin: 2px 0; font-size: 12px;" hidden>Score: <span id="pipe-cons-score">-</span> | Cutoff: <span id="pipe-cons-cutoff">-</span></p>
+          <p id="pipe-cons-numbers" class="pipe-numbers" hidden><span class="pipe-num-part">Score achieved: <span id="pipe-cons-score">-</span></span> <span class="pipe-num-sep">|</span> <span class="pipe-num-part">Passing score: <span id="pipe-cons-cutoff">-</span></span></p>
           <span id="pipe-cons-status" class="pipe-status">Pending</span>
       </div>
       <div class="pipeline-arrow" id="arrow-2" style="color: var(--line);"><span>→</span></div>
       <div id="pipe-stage-cashflow" class="metric-box pipe-stage" style="border-top: 3.5px solid var(--cashflow); opacity: 0.4;">
           <b>3. Cashflow</b>
-          <p id="pipe-cash-numbers" style="margin: 2px 0; font-size: 12px;" hidden>Score: <span id="pipe-cash-score">-</span> | Cutoff: <span id="pipe-cash-cutoff">-</span></p>
+          <p id="pipe-cash-numbers" class="pipe-numbers" hidden><span class="pipe-num-part">Score achieved: <span id="pipe-cash-score">-</span></span> <span class="pipe-num-sep">|</span> <span class="pipe-num-part">Passing score: <span id="pipe-cash-cutoff">-</span></span></p>
           <span id="pipe-cash-status" class="pipe-status">Pending</span>
       </div>
       <div class="pipeline-arrow" id="arrow-3" style="color: var(--line);"><span>→</span></div>
