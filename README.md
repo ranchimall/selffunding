@@ -21,6 +21,7 @@ A self-funding economy can grow through two primary mechanisms:
 
 1. **Recurring Cash Flow** — Generate a regular flow of revenue to fund ongoing operations and development.
 2. **Growing Attention → Growing Consumption** — Attract increasing attention to products and services, leading to greater consumption and economic activity.
+3. **Link:** [https://ranchimall.github.io/sfbs]
 
 ### Sources of Attention
 
