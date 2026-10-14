@@ -51,8 +51,14 @@ body{margin:0;background:radial-gradient(circle at 18% 0%, rgba(14,124,134,.10),
 .brand-logo{width:36px;height:36px;border-radius:50%;display:block;object-fit:contain;flex-shrink:0}
 .brand-name{font:700 20px/1.2 var(--head);letter-spacing:-.02em;color:var(--ink)}
 
-/* header right actions */
-.header-right{display:flex;align-items:center;gap:12px}
+/* header navigation & actions */
+.header-nav{display:flex;align-items:center;gap:10px;margin-left:auto}
+.header-btn{display:inline-flex;align-items:center;justify-content:center;height:38px;padding:0 14px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);font:600 13px/1 var(--head);letter-spacing:-.01em;text-decoration:none;white-space:nowrap;transition:border-color .15s,color .15s,background-color .15s,transform .1s,box-shadow .15s}
+.header-btn:hover{border-color:var(--attention);color:var(--attention);transform:translateY(-1px);box-shadow:0 4px 12px rgba(19,32,43,.08)}
+.header-btn:focus-visible{outline:3px solid var(--attention);outline-offset:2px}
+.header-btn:active{transform:scale(.96)}
+:root[data-theme="dark"] .header-btn:hover{box-shadow:0 4px 12px rgba(0,0,0,.35)}
+.header-right{display:flex;align-items:center;gap:12px;margin-left:10px}
 
 /* Direct Touch Hub (Top Navigation) */
 .touch-hub{margin:0 0 24px;display:flex;flex-direction:column;gap:18px}
@@ -468,7 +474,11 @@ h1{font:700 clamp(30px,5vw,46px)/1.08 var(--head);letter-spacing:-.02em;margin:0
 
 @media(max-width:580px){
   .wrap{padding:18px 12px 48px;overflow-x:hidden}
-  .top-bar-inner{padding:10px 12px}
+  .top-bar-inner{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;row-gap:8px;padding:10px 12px}
+  .brand{order:1}
+  .header-right{order:2;margin-left:auto}
+  .header-nav{order:3;width:100%;margin-left:0;display:flex;gap:8px}
+  .header-btn{flex:1 1 0;min-width:0;height:34px;padding:0 8px;font-size:12px;text-align:center}
   .hero-shell{margin-top:6px}
   .hero-actions{gap:8px}
   .hero-link{width:100%;justify-content:center}
@@ -501,6 +511,7 @@ h1{font:700 clamp(30px,5vw,46px)/1.08 var(--head);letter-spacing:-.02em;margin:0
   .brand-name{font-size:14px}
   .tab b{font-size:12px}
   .top-bar-inner{padding:8px 10px}
+  .header-btn{font-size:11px;padding:0 4px;height:32px}
 }
 
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
@@ -513,6 +524,10 @@ h1{font:700 clamp(30px,5vw,46px)/1.08 var(--head);letter-spacing:-.02em;margin:0
       <img src="logo.png" alt="RanchiMall logo" class="brand-logo" width="36" height="36">
       <span class="brand-name">RanchiMall</span>
     </a>
+    <nav class="header-nav" aria-label="Quick links">
+      <a href="https://ranchimall.github.io/dogewallet/" target="_blank" rel="noopener noreferrer" class="header-btn">Interblockchain Swaps</a>
+      <a href="https://ranchimall.github.io/musicLibraryAI/" target="_blank" rel="noopener noreferrer" class="header-btn">AI Apps</a>
+    </nav>
     <div class="header-right">
       <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark and light theme" title="Toggle theme">
         <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
