@@ -1,0 +1,2279 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Self Funding Blockchain Systems: Attention, Consumption, Cashflow</title>
+<link rel="icon" type="image/png" href="logo.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:wght@600;700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<script>
+(function(){
+  try{
+    var s=localStorage.getItem('theme');
+    var p=window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light';
+    document.documentElement.setAttribute('data-theme',s||p);
+  }catch(e){}
+})();
+</script>
+<style>
+:root{
+  --bg:#EEF2F5; --surface:#FFFFFF; --ink:#13202B; --muted:#5B6B78; --line:#DCE3E8;
+  --attention:#0E7C86; --consumption:#4B52D6; --cashflow:#C26A0A; --denom:#A21CAF; --accent:var(--attention);
+  --head:"Bricolage Grotesque","Segoe UI",system-ui,sans-serif;
+  --body:"Figtree","Segoe UI",system-ui,sans-serif;
+  color-scheme:light;
+  box-sizing:border-box; padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){
+  :root:not([data-theme="light"]){
+    --bg:#0F171D; --surface:#17222A; --ink:#E8EEF2; --muted:#93A4B0; --line:#26343E;
+    --attention:#3CC4CF; --consumption:#8B91F5; --cashflow:#F0A24C; --denom:#E879F9; color-scheme:dark;
+  }
+}
+:root[data-theme="dark"]{
+  --bg:#0F171D; --surface:#17222A; --ink:#E8EEF2; --muted:#93A4B0; --line:#26343E;
+  --attention:#3CC4CF; --consumption:#8B91F5; --cashflow:#F0A24C; --denom:#E879F9; color-scheme:dark;
+}
+:root[data-theme="light"]{
+  --bg:#EEF2F5; --surface:#FFFFFF; --ink:#13202B; --muted:#5B6B78; --line:#DCE3E8;
+  --attention:#0E7C86; --consumption:#4B52D6; --cashflow:#C26A0A; --denom:#A21CAF; color-scheme:light;
+}
+*{box-sizing:border-box}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:radial-gradient(circle at 18% 0%, rgba(14,124,134,.10), transparent 28rem),linear-gradient(180deg,var(--surface) 0%,var(--bg) 42rem);color:var(--ink);font:400 16px/1.55 var(--body);transition:background-color .2s ease,color .2s ease}
+
+/* top bar */
+.top-bar{background:color-mix(in srgb,var(--surface) 88%,transparent);backdrop-filter:blur(14px);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:100;transition:background-color .2s ease,border-color .2s ease}
+.top-bar-inner{display:flex;align-items:center;justify-content:space-between;padding:12px clamp(16px,3vw,32px);width:min(1200px,100%);margin:0 auto}
+.brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink);user-select:none;transition:opacity .15s}
+.brand:hover{opacity:.85}
+.brand-logo{width:36px;height:36px;border-radius:50%;display:block;object-fit:contain;flex-shrink:0}
+.brand-name{font:700 20px/1.2 var(--head);letter-spacing:-.02em;color:var(--ink)}
+
+/* header right actions */
+.header-right{display:flex;align-items:center;gap:12px}
+
+/* Direct Touch Hub (Top Navigation) */
+.touch-hub{margin:0 0 24px;display:flex;flex-direction:column;gap:18px}
+.touch-hub-group{background:var(--surface);border:1px solid var(--line);border-radius:24px;padding:20px;box-shadow:0 20px 54px rgba(19,32,43,.07)}
+.touch-hub-group.sim-primary{border-color:color-mix(in srgb,var(--consumption) 28%,var(--line));background:linear-gradient(135deg,color-mix(in srgb,var(--surface) 92%,var(--consumption)),var(--surface))}
+.touch-hub-head{display:flex;align-items:center;gap:10px;margin-bottom:12px;flex-wrap:wrap}
+.touch-hub-badge{display:inline-flex;align-items:center;gap:5px;padding:4px 10px;border-radius:8px;font:700 11.5px var(--head);text-transform:uppercase;letter-spacing:.05em;background:rgba(14,124,134,.12);color:var(--attention)}
+.touch-hub-badge.sim{background:rgba(75,82,214,.12);color:var(--consumption)}
+:root[data-theme="dark"] .touch-hub-badge{background:rgba(60,196,207,.15);color:var(--attention)}
+:root[data-theme="dark"] .touch-hub-badge.sim{background:rgba(139,145,245,.18);color:var(--consumption)}
+.touch-hub-sub{font-size:12.5px;color:var(--muted);font-weight:500}
+
+.touch-hub-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+
+.touch-card{all:unset;cursor:pointer;background:color-mix(in srgb,var(--bg) 72%,var(--surface));border:1.5px solid var(--line);border-radius:18px;padding:17px 18px;display:flex;flex-direction:column;gap:7px;transition:border-color .15s,transform .15s,box-shadow .15s,background-color .15s;text-align:left;box-sizing:border-box;min-height:142px;position:relative;overflow:hidden}
+.touch-card:before{content:"";position:absolute;inset:0 0 auto;height:4px;background:var(--c);opacity:.85}
+.touch-card:hover{transform:translateY(-4px);box-shadow:0 18px 36px rgba(19,32,43,.12);border-color:var(--c);background:var(--surface)}
+.touch-card:focus-visible{outline:3px solid var(--c);outline-offset:2px}
+.touch-card:active{transform:scale(.98)}
+
+.touch-card-attn{--c:var(--attention)}
+.touch-card-cons{--c:var(--consumption)}
+.touch-card-cash{--c:var(--cashflow)}
+
+.touch-card-tag{font:700 11px var(--head);text-transform:uppercase;letter-spacing:.04em;color:var(--c);display:inline-flex;align-items:center;gap:4px}
+.touch-card-title{font:700 18px/1.18 var(--head);color:var(--ink);transition:color .15s}
+.touch-card:hover .touch-card-title{color:var(--c)}
+.touch-card-desc{font-size:13px;color:var(--muted);line-height:1.45}
+.touch-card-action{font:700 12.5px var(--head);color:var(--c);margin-top:auto;display:inline-flex;align-items:center;gap:4px}
+
+/* Floating Back to Top Button */
+.back-to-top{position:fixed;bottom:24px;right:24px;z-index:999;display:inline-flex;align-items:center;gap:6px;background:var(--surface);color:var(--ink);border:1.5px solid var(--line);padding:9px 15px;border-radius:30px;font:700 13px var(--head);letter-spacing:.02em;box-shadow:0 4px 16px rgba(0,0,0,.14);cursor:pointer;opacity:0;visibility:hidden;transform:translateY(14px);transition:opacity .25s ease,transform .25s ease,visibility .25s ease,border-color .15s,box-shadow .15s,color .15s}
+.back-to-top.visible{opacity:1;visibility:visible;transform:translateY(0)}
+.back-to-top:hover{border-color:var(--attention);color:var(--attention);transform:translateY(-2px);box-shadow:0 6px 20px rgba(0,0,0,.2)}
+.back-to-top:active{transform:scale(.95)}
+:root[data-theme="dark"] .back-to-top{box-shadow:0 6px 20px rgba(0,0,0,.6)}
+
+/* hero banner callout */
+.case-study-hero-banner{margin:0 0 26px}
+.case-study-hero-btn{display:inline-flex;align-items:center;gap:12px;background:var(--surface);border:1.5px solid var(--attention);border-radius:14px;padding:12px 18px;text-decoration:none;color:var(--ink);transition:transform .15s,box-shadow .15s,background-color .15s;box-shadow:0 2px 8px rgba(14,124,134,.1)}
+.case-study-hero-btn:hover{transform:translateY(-2px);box-shadow:0 6px 18px rgba(14,124,134,.2);background:var(--bg)}
+.case-study-hero-btn .cs-badge{font:700 11px var(--head);letter-spacing:.06em;text-transform:uppercase;padding:4px 8px;border-radius:6px;background:rgba(14,124,134,.14);color:var(--attention)}
+:root[data-theme="dark"] .case-study-hero-btn .cs-badge{background:rgba(60,196,207,.2)}
+.case-study-hero-btn .cs-title{font:700 16px/1.25 var(--head);color:var(--ink)}
+.case-study-hero-btn .cs-arrow{font-size:18px;font-weight:700;color:var(--attention);transition:transform .2s ease}
+.case-study-hero-btn:hover .cs-arrow{transform:translateY(2px)}
+@media(max-width:640px){.case-study-hero-btn{flex-wrap:wrap;padding:12px 14px;gap:8px}.case-study-hero-btn .cs-title{font-size:14.5px}}
+
+/* theme toggle (icon only, no text) */
+.theme-toggle{all:unset;cursor:pointer;width:38px;height:38px;border-radius:12px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);display:flex;align-items:center;justify-content:center;transition:border-color .15s,box-shadow .15s,transform .1s,color .15s,background-color .15s}
+.theme-toggle:hover{border-color:var(--attention);color:var(--attention)}
+.theme-toggle:focus-visible{outline:3px solid var(--attention);outline-offset:2px}
+.theme-toggle:active{transform:scale(.92)}
+.theme-toggle svg{display:block;transition:transform .25s ease}
+.theme-toggle:hover svg{transform:rotate(15deg)}
+.theme-toggle .icon-sun,.theme-toggle .icon-moon{display:none}
+:root[data-theme="dark"] .theme-toggle .icon-sun{display:block}
+:root[data-theme="dark"] .theme-toggle .icon-moon{display:none}
+:root:not([data-theme="dark"]) .theme-toggle .icon-sun{display:none}
+:root:not([data-theme="dark"]) .theme-toggle .icon-moon{display:block}
+
+.wrap{max-width:1180px;margin:0 auto;padding:34px 20px 72px}
+h1{font:700 clamp(30px,5vw,46px)/1.08 var(--head);letter-spacing:-.02em;margin:0 0 8px}
+.kicker{font:600 clamp(18px,3vw,24px)/1.2 var(--head);color:var(--attention);margin:0 0 10px}
+.sub{color:var(--muted);margin:0 0 28px;max-width:56ch}
+
+/* guided story hero */
+.hero-shell{margin:32px 0 34px;text-align:center}
+.hero-copy{min-width:0;margin:0 auto 28px}
+.hero-copy h1{font-size:clamp(40px,6vw,64px);max-width:100%;margin-left:auto;margin-right:auto}
+.hero-copy .sub{font-size:20px;margin:0 auto 22px;max-width:72ch}
+.hero-actions{display:flex;flex-wrap:wrap;gap:10px;justify-content:center}
+.hero-link{display:inline-flex;align-items:center;gap:8px;border:1.5px solid var(--line);background:var(--surface);color:var(--ink);text-decoration:none;border-radius:999px;padding:10px 15px;font:700 13px var(--head);box-shadow:0 10px 28px rgba(19,32,43,.06);transition:transform .15s,border-color .15s,color .15s}
+.hero-link:hover{transform:translateY(-2px);border-color:var(--attention);color:var(--attention)}
+.guided-stepper{display:grid;grid-template-columns:1fr auto 1fr auto 1fr auto 1fr;align-items:center;gap:clamp(14px,3vw,42px);margin:18px auto 6px;max-width:980px}
+.guide-step{--c:var(--attention);display:flex;flex-direction:column;align-items:center;gap:10px;color:var(--ink)}
+.guide-icon{width:118px;height:118px;border-radius:50%;display:grid;place-items:center;color:#fff;background:radial-gradient(circle at 34% 28%, color-mix(in srgb,#fff 34%,var(--c)), var(--c));box-shadow:0 18px 36px color-mix(in srgb,var(--c) 24%,transparent), inset 0 0 0 10px color-mix(in srgb,#fff 30%,transparent), 0 0 0 8px color-mix(in srgb,var(--c) 12%,transparent)}
+.guide-icon svg{width:48px;height:48px;display:block}
+.guide-step b{font:700 22px/1.1 var(--head)}
+.guide-step:after{content:"";width:86px;height:8px;border-radius:999px;background:color-mix(in srgb,var(--line) 80%,var(--surface));box-shadow:inset 0 1px 2px rgba(19,32,43,.08)}
+.guide-step.attention:after{background:var(--attention)}
+.guide-step.attention{--c:var(--attention)}
+.guide-step.consumption{--c:var(--consumption)}
+.guide-step.cashflow{--c:var(--cashflow)}
+.guide-step.self{--c:#80B93A}
+.guide-arrow{color:#A8B2BD;font:700 46px/1 var(--head);margin-top:-28px}
+.section-intro{display:grid;grid-template-columns:auto minmax(0,1fr);gap:20px;align-items:center;margin-bottom:22px}
+.section-icon{width:78px;height:78px;border-radius:50%;display:grid;place-items:center;color:#fff;background:var(--c);box-shadow:0 18px 36px color-mix(in srgb,var(--c) 22%,transparent)}
+.section-icon svg{width:36px;height:36px}
+.section-intro h2{margin:0 0 6px}
+.section-intro .lead{margin:0}
+
+/* tabs */
+.tabs{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-bottom:16px}
+.tab{all:unset;cursor:pointer;background:var(--surface);border:1.5px solid var(--line);border-radius:14px;padding:14px 16px 10px;display:flex;flex-direction:column;gap:2px;transition:border-color .15s,box-shadow .15s}
+.tab:hover{border-color:var(--c)}
+.tab:focus-visible{outline:3px solid var(--c);outline-offset:2px}
+.tab[aria-selected="true"]{border-color:var(--c);box-shadow:inset 0 -4px 0 var(--c)}
+.tab b{font:700 18px var(--head);color:var(--ink)}
+.tab small{color:var(--muted);font-size:13px}
+.tab svg{width:100%;height:34px;margin-top:6px;display:block}
+
+/* panel */
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:24px}
+.panel[hidden]{display:none}
+.panel h2{font:700 26px/1.15 var(--head);margin:0 0 4px;letter-spacing:-.01em}
+.panel .lead{color:var(--muted);margin:0 0 18px}
+.chart-head{display:flex;flex-wrap:wrap;gap:8px 20px;align-items:baseline;margin-bottom:6px;font-size:14px;color:var(--muted)}
+.chart-head strong{color:var(--c);font:700 20px var(--head)}
+.chart{width:100%;height:auto;display:block}
+.chart text{fill:var(--muted);font:12px var(--body)}
+.legend{display:flex;gap:18px;font-size:13px;color:var(--muted);margin:4px 0 26px}
+.legend i{display:inline-block;width:18px;height:0;border-top:3px solid var(--c);vertical-align:middle;margin-right:6px}
+.legend i.d{border-top:2px dashed var(--ink);opacity:.6}
+
+/* attention list */
+.list-head,.row{display:grid;grid-template-columns:1.1fr 1.6fr 1.2fr;gap:16px;padding:14px 4px}
+.list-head{color:var(--muted);font-size:13px;font-weight:600;border-bottom:1.5px solid var(--ink);padding-bottom:8px}
+.row{border-bottom:1px solid var(--line)}
+.row:last-child{border-bottom:0}
+.row .n{font-weight:600}
+.row .n span{color:var(--c);margin-right:8px;font-variant-numeric:tabular-nums}
+.row .k{display:none;color:var(--muted);font-size:12px;font-weight:600}
+.empty{border:1.5px dashed var(--line);border-radius:12px;padding:22px;color:var(--muted)}
+.empty b{display:block;color:var(--ink);margin-bottom:2px}
+@media (max-width:720px){
+  .tabs{gap:8px}.tab{padding:10px 10px 8px}.tab b{font-size:14px}.tab small{display:none}
+  .panel{padding:18px}
+  .list-head{display:none}
+  .row{grid-template-columns:1fr;gap:6px}
+  .row .k{display:block}
+}
+@media (max-width:540px){
+  .tabs{grid-template-columns:repeat(3,1fr);justify-content:stretch;gap:6px}
+  .tabs .tab{padding:8px 6px 6px}
+  .tabs .tab b{font-size:12px}
+  .tabs .tab svg{display:block;height:22px;margin-top:4px}
+}
+/* Storyboard Section */
+.pill-link{display:inline-flex;align-items:center;gap:4px;font-size:13px;font-weight:600;color:var(--attention);text-decoration:none;background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:3px 12px;margin-top:6px;transition:border-color .15s,background-color .15s}
+.pill-link:hover{border-color:var(--attention);background:var(--bg)}
+.storyboard-section{margin-top:56px;padding-top:24px;border-top:1px solid var(--line);scroll-margin-top:72px}
+.storyboard-head{margin-bottom:32px}
+.storyboard-head .badge{display:inline-block;padding:4px 12px;border-radius:20px;background:rgba(14,124,134,.12);color:var(--attention);font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-bottom:10px}
+:root[data-theme="dark"] .storyboard-head .badge{background:rgba(60,196,207,.15)}
+.storyboard-head h2{font:700 clamp(24px,4vw,34px)/1.15 var(--head);margin:0 0 10px;letter-spacing:-.02em}
+.storyboard-head p{color:var(--muted);max-width:70ch;margin:0;font-size:16px}
+
+/* Timeline Track */
+.story-track{position:relative;border-left:2.5px solid var(--line);margin-left:20px;padding-left:40px;display:flex;flex-direction:column;gap:36px}
+.story-step{position:relative;background:var(--surface);border:1px solid var(--line);border-radius:18px;padding:26px 28px;transition:border-color .15s}
+.story-step:hover{border-color:var(--attention)}
+.story-marker{position:absolute;left:-58px;top:24px;width:34px;height:34px;border-radius:50%;background:var(--surface);border:2.5px solid var(--attention);color:var(--attention);font:700 14px/1 var(--head);display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 4px var(--bg)}
+.story-tag{display:inline-block;font-size:11.5px;font-weight:700;color:var(--attention);text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px}
+.story-title{font:700 22px/1.2 var(--head);margin:0 0 10px;color:var(--ink)}
+.story-desc{color:var(--muted);font-size:15px;line-height:1.6;margin:0 0 20px}
+
+/* Contrast Cards (Step 1) */
+.contrast-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:20px}
+.contrast-card{border:1px solid var(--line);border-radius:14px;padding:18px;background:var(--bg);min-width:0}
+.contrast-card.meme{border-top:3.5px solid #E05252}
+.contrast-card.science{border-top:3.5px solid var(--attention)}
+.contrast-card h4{font:700 16px var(--head);margin:0 0 10px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px}
+.contrast-card .stat-pill{font-size:11.5px;font-weight:600;padding:2px 8px;border-radius:8px}
+.contrast-card.meme .stat-pill{background:rgba(224,82,82,.15);color:#D32F2F}
+:root[data-theme="dark"] .contrast-card.meme .stat-pill{color:#FF6B6B}
+.contrast-card.science .stat-pill{background:rgba(14,124,134,.15);color:var(--attention)}
+.contrast-list{list-style:none;padding:0;margin:0;font-size:13.5px;color:var(--ink);display:flex;flex-direction:column;gap:7px}
+.contrast-list li{display:flex;gap:8px}
+.contrast-list li span.label{color:var(--muted);min-width:125px;flex-shrink:0}
+
+/* 3-Layer Pipeline */
+.pipeline-flow{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--bg)}
+.pipe-node{background:var(--surface);border:1.5px solid var(--line);border-radius:10px;padding:12px 14px;min-width:0}
+.pipe-num{font-size:11px;font-weight:700;color:var(--attention);text-transform:uppercase;letter-spacing:.04em}
+.pipe-name{font:700 15px var(--head);color:var(--ink);margin:2px 0 6px}
+.pipe-examples{font-size:12px;color:var(--muted);line-height:1.45}
+
+/* 6 Metrics Grid (Step 2) */
+.metrics-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+/* Consumption Storyboard styles */
+.sim-btn-cons{all:unset;cursor:pointer;padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--bg);color:var(--ink);transition:all .15s}
+.sim-btn-cons.active,.sim-btn-cons:hover{background:var(--surface);border-color:var(--consumption);color:var(--consumption);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.metrics-grid-7{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+
+/* Cashflow Storyboard styles */
+.sim-btn-cash{all:unset;cursor:pointer;padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--bg);color:var(--ink);transition:all .15s}
+.sim-btn-cash.active,.sim-btn-cash:hover{background:var(--surface);border-color:var(--cashflow);color:var(--cashflow);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.metrics-grid-9{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+
+.pred-spectrum{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin-top:16px;padding:16px;border-radius:12px;background:var(--bg);border:1px solid var(--line)}
+.pred-card{padding:12px;border-radius:10px;background:var(--surface);border:1px solid var(--line);min-width:0}
+.pred-card b{display:block;font:700 13.5px var(--head);margin-bottom:4px;color:var(--ink)}
+.pred-card p{margin:0;font-size:12px;color:var(--muted);line-height:1.4}
+.pred-badge{display:inline-block;padding:2px 8px;border-radius:6px;font-size:10.5px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:6px}
+.pred-badge.high{background:rgba(46,125,50,.15);color:#2E7D32}
+.pred-badge.med{background:rgba(194,106,10,.15);color:var(--cashflow)}
+.pred-badge.low{background:rgba(224,82,82,.15);color:#D32F2F}
+:root[data-theme="dark"] .pred-badge.high{color:#81C784}
+:root[data-theme="dark"] .pred-badge.med{color:var(--cashflow)}
+:root[data-theme="dark"] .pred-badge.low{color:#FF6B6B}
+
+.ratio-box{background:var(--bg);border:1.5px solid var(--cashflow);border-radius:14px;padding:20px;margin-top:20px}
+.ratio-header{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;margin-bottom:12px}
+.ratio-badge{padding:4px 12px;border-radius:20px;font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:.04em;background:rgba(194,106,10,.14);color:var(--cashflow)}
+.ratio-formula{font:700 clamp(14px,2.5vw,19px) var(--head);color:var(--ink);background:var(--surface);padding:10px 16px;border-radius:10px;border:1px solid var(--line);display:block;max-width:100%;word-break:break-word;overflow-wrap:break-word;margin-bottom:10px}
+.ratio-desc{font-size:13.5px;color:var(--muted);line-height:1.5;margin:0}
+
+.cash-dashboard-wrap{margin-top:20px;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:20px}
+.dash-title{font:700 16px var(--head);color:var(--ink);margin:0 0 14px}
+.dash-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+.dash-item{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:12px 14px;position:relative;min-width:0}
+.dash-item .d-num{font-size:11px;font-weight:700;color:var(--cashflow);display:block;margin-bottom:3px;letter-spacing:.04em}
+.dash-item b{font:700 13.5px var(--head);color:var(--ink);display:block;margin-bottom:4px}
+.dash-item p{margin:0;font-size:12px;color:var(--muted);line-height:1.4}
+
+.crypto-realities-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:20px}
+.crypto-card{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--bg);min-width:0}
+.crypto-card b{font:700 14px var(--head);display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:6px;margin-bottom:6px;color:var(--ink)}
+.crypto-card p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.45}
+.crypto-card .c-tag{font-size:11px;font-weight:700;padding:2px 7px;border-radius:6px}
+.crypto-card.false .c-tag{background:rgba(224,82,82,.15);color:#D32F2F}
+.crypto-card.true .c-tag{background:rgba(194,106,10,.15);color:var(--cashflow)}
+:root[data-theme="dark"] .crypto-card.false .c-tag{color:#FF6B6B}
+
+.metric-box{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--bg);transition:transform .15s,border-color .15s;min-width:0}
+.metric-box:hover{transform:translateY(-2px);border-color:var(--attention)}
+.metric-box b{display:block;font:700 15px var(--head);color:var(--ink);margin-bottom:4px}
+.metric-box p{margin:0 0 8px;font-size:12.5px;color:var(--muted);line-height:1.4}
+.metric-box .metric-ex{font-size:11.5px;color:var(--attention);font-weight:600;word-break:break-word}
+
+/* Full span utility */
+.span-full{grid-column:1 / -1 !important}
+
+/* 10-Year Simulation (Step 3) */
+.sim-controls{display:flex;gap:8px;margin-bottom:14px;flex-wrap:wrap;align-items:center}
+.sim-controls span{font-size:13px;font-weight:600;color:var(--muted);margin-right:4px}
+.sim-btn{all:unset;cursor:pointer;padding:6px 14px;border-radius:8px;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--bg);color:var(--ink);transition:all .15s}
+.sim-btn.active,.sim-btn:hover{background:var(--surface);border-color:var(--attention);color:var(--attention);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.sim-chart-wrap{background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:16px 20px;scroll-margin-top:72px}
+.sim-chart-wrap > svg{width:100%;height:auto;display:block}
+
+/* Full Cycle Pipeline */
+#pipeline-visual .metric-box{transition:opacity .4s ease,border-color .15s,box-shadow .3s ease}
+.pipeline-arrow{transition:color .3s ease,transform .3s ease}
+.pipe-status{display:inline-block;font:700 11px var(--head);letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border-radius:20px;border:1.5px solid var(--line);color:var(--muted);background:var(--surface)}
+.pipe-status.pass-attn{color:var(--attention);border-color:var(--attention);background:rgba(14,124,134,.12)}
+.pipe-status.pass-cons{color:var(--consumption);border-color:var(--consumption);background:rgba(75,82,214,.12)}
+.pipe-status.pass-cash{color:var(--cashflow);border-color:var(--cashflow);background:rgba(194,106,10,.12)}
+.pipe-status.fail{color:#E05252;border-color:#E05252;background:rgba(224,82,82,.1)}
+:root[data-theme="dark"] .pipe-status.fail{color:#FF6B6B}
+.pipe-status.won-self{color:var(--attention);border-color:var(--attention);background:rgba(14,124,134,.15)}
+#pipe-stage-selffunding.won{border-color:var(--attention);box-shadow:0 0 0 3px rgba(14,124,134,.18)}
+
+/* Full Cycle Pipeline: rail & play button */
+.pipe-rail{display:flex;align-items:stretch;gap:6px}
+.pipe-rail .pipe-stage{flex:1 1 0;min-width:0;text-align:center;padding:10px 8px;display:flex;flex-direction:column;align-items:center;justify-content:center}
+.pipe-rail .pipe-stage .pipe-status{margin-top:6px}
+.pipe-rail .pipeline-arrow{align-self:center;flex:0 0 auto;font-size:22px;font-weight:700;line-height:1;color:var(--line);text-align:center}
+.pipe-rail .pipeline-arrow span{display:inline-block;transition:transform .3s ease}
+.pipe-play{all:unset;cursor:pointer;width:34px;height:34px;border-radius:50%;background:var(--attention);color:#FFFFFF;display:inline-flex;align-items:center;justify-content:center;flex:0 0 34px;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:transform .15s ease,opacity .15s;box-sizing:border-box}
+.pipe-play:hover{transform:scale(1.08)}
+.pipe-play:active{transform:scale(.94)}
+.pipe-play:focus-visible{outline:3px solid var(--attention);outline-offset:2px}
+.pipe-play svg{width:18px !important;height:18px !important;min-width:18px !important;min-height:18px !important;max-width:18px !important;max-height:18px !important;display:block !important;margin-left:2px}
+:root[data-theme="dark"] .pipe-play{color:#0F171D}
+@media(max-width:720px){
+  .pipe-rail{flex-direction:column;align-items:stretch;overflow:visible;gap:2px}
+  .pipe-rail .pipe-stage{flex:0 0 auto;padding:12px 14px;text-align:center}
+  .pipe-rail .pipeline-arrow{align-self:center;font-size:20px;margin:2px 0}
+  .pipe-rail .pipeline-arrow span{transform:rotate(90deg)}
+}
+.sim-legend{display:flex;flex-wrap:wrap;gap:8px 16px;font-size:12.5px;color:var(--muted);margin-top:10px}
+.sim-legend i{display:inline-block;width:18px;height:0;vertical-align:middle;margin-right:6px}
+.sim-legend i.meme{border-top:2.5px dashed #E05252}
+.sim-legend i.science{border-top:3px solid var(--attention)}
+.sim-status{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:14px;padding-top:14px;border-top:1px solid var(--line);font-size:13px}
+.sim-status-col b{display:block;font:700 14px var(--head);margin-bottom:4px}
+.sim-status-col.meme b{color:#E05252}
+.sim-status-col.science b{color:var(--attention)}
+.sim-status-col p{margin:0;color:var(--muted);line-height:1.45}
+
+/* Score formula banner (Attention & Consumption simulators) */
+.sim-formula{margin-top:10px;padding:10px 14px;border-radius:10px;background:var(--surface);border:1px solid var(--line);border-left:4px solid var(--attention);font-family:monospace;font-size:14.5px;font-weight:700;color:var(--ink);line-height:1.5;white-space:nowrap;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:thin;max-width:100%;box-sizing:border-box}
+.sim-formula-cons{border-left-color:var(--consumption)}
+.sim-formula-cash{border-left-color:var(--cashflow)}
+
+/* Simulator output rows (shared by Attention / Consumption / Cashflow) */
+.sim-row{display:flex;justify-content:space-between;align-items:baseline;gap:2px 12px;padding:6px 0;border-bottom:1px dashed var(--line)}
+.sim-row-label{color:var(--muted)}
+.sim-row-value{font-weight:600;white-space:nowrap}
+.sim-total{display:flex;justify-content:space-between;align-items:baseline;gap:2px 12px;padding:8px 0;font-weight:700;font-size:15px;border-top:2px solid var(--line);margin-top:8px}
+@media(max-width:540px){
+  .sim-row{display:block;padding:7px 0}
+  .sim-row-value{display:block;text-align:right;margin-top:1px}
+  .sim-total{display:block}
+  .sim-total .sim-row-value{font-size:16px;margin-top:2px}
+}
+
+/* Full Cycle Pipeline */
+#pipeline-visual .metric-box{transition:opacity .4s ease,border-color .15s,box-shadow .3s ease}
+.pipeline-arrow{transition:color .3s ease,transform .3s ease}
+.pipe-status{display:inline-block;font:700 11px var(--head);letter-spacing:.08em;text-transform:uppercase;padding:4px 12px;border-radius:20px;border:1.5px solid var(--line);color:var(--muted);background:var(--surface)}
+.pipe-status.pass-attn{color:var(--attention);border-color:var(--attention);background:rgba(14,124,134,.12)}
+.pipe-status.pass-cons{color:var(--consumption);border-color:var(--consumption);background:rgba(75,82,214,.12)}
+.pipe-status.pass-cash{color:var(--cashflow);border-color:var(--cashflow);background:rgba(194,106,10,.12)}
+.pipe-status.fail{color:#E05252;border-color:#E05252;background:rgba(224,82,82,.1)}
+:root[data-theme="dark"] .pipe-status.fail{color:#FF6B6B}
+.pipe-status.won-self{color:var(--attention);border-color:var(--attention);background:rgba(14,124,134,.15)}
+#pipe-stage-selffunding.won{border-color:var(--attention);box-shadow:0 0 0 3px rgba(14,124,134,.18)}
+@keyframes pipePop{0%{transform:scale(.96)}60%{transform:scale(1.02)}100%{transform:scale(1)}}
+@keyframes pipePulse{0%{transform:scale(1)}50%{transform:scale(1.5)}100%{transform:scale(1.25)}}
+#pipeline-visual .pipe-stage.lit{animation:pipePop .45s ease}
+.pipeline-arrow.lit{animation:pipePulse .5s ease}
+
+/* Full Cycle Pipeline: horizontal rail (top of page) */
+.pipe-rail{display:flex;align-items:stretch;gap:6px}
+.pipe-rail .pipe-stage{flex:1 1 0;min-width:0;text-align:center;padding:10px 8px}
+.pipe-rail .pipe-stage .pipe-status{margin-top:4px}
+.pipe-rail .pipeline-arrow{align-self:center;flex:0 0 auto;font-size:22px;font-weight:700;line-height:1}
+.pipe-rail .pipeline-arrow span{display:inline-block;transition:transform .3s ease}
+.pipe-play{all:unset;cursor:pointer;width:36px;height:36px;border-radius:50%;background:var(--attention);color:#FFFFFF;display:flex;align-items:center;justify-content:center;flex:0 0 auto;box-shadow:0 2px 8px rgba(0,0,0,.18);transition:transform .15s ease,opacity .15s}
+.pipe-play:hover{transform:scale(1.08)}
+.pipe-play:active{transform:scale(.94)}
+.pipe-play:focus-visible{outline:3px solid var(--attention);outline-offset:2px}
+.pipe-play svg{width:22px;height:22px;margin-left:2px}
+:root[data-theme="dark"] .pipe-play{color:#0F171D}
+@media(max-width:720px){
+  .pipe-rail{flex-direction:column;align-items:stretch;overflow:visible;gap:2px}
+  .pipe-rail .pipe-stage{flex:0 0 auto;padding:10px 12px 12px}
+  .pipe-rail .pipeline-arrow{align-self:center;font-size:26px;margin:2px 0}
+  .pipe-rail .pipeline-arrow span{transform:rotate(90deg)}
+}
+@media(max-width:540px){
+  .sim-formula{font-size:12.5px;padding:8px 10px}
+  .sim-chart-wrap{padding:14px 14px}
+}
+
+/* Two-Level Split (Step 4) */
+.levels-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.level-card{border:1px solid var(--line);border-radius:14px;padding:18px;background:var(--bg);min-width:0}
+.level-card h4{font:700 16px var(--head);margin:0 0 6px;color:var(--ink)}
+.level-card p{font-size:13px;color:var(--muted);margin:0 0 10px}
+.level-card ul{margin:0;padding-left:18px;font-size:13px;color:var(--ink);line-height:1.55}
+.score-banner{margin-top:14px;padding:14px 18px;border-radius:12px;background:rgba(14,124,134,.08);border:1.5px dashed var(--attention);color:var(--ink);font-size:13.5px;line-height:1.5}
+:root[data-theme="dark"] .score-banner{background:rgba(60,196,207,.1)}
+
+/* Flywheel (Step 5) */
+.flywheel-container{display:grid;grid-template-columns:1.15fr 1fr;gap:24px;align-items:center}
+.flywheel-svg-wrap{text-align:center;background:var(--bg);border:1px solid var(--line);border-radius:14px;padding:16px;min-width:0}
+.flywheel-svg-wrap svg{max-width:360px;width:100%;height:auto}
+@keyframes rotateFlywheel{from{stroke-dashoffset:0}to{stroke-dashoffset:-240}}
+.rotating-ring{animation:rotateFlywheel 18s linear infinite}
+.token-distinction{display:flex;flex-direction:column;gap:14px}
+.dist-box{border:1px solid var(--line);border-radius:12px;padding:14px 16px;background:var(--bg);min-width:0}
+.dist-box.leak{border-left:4px solid #E05252}
+.dist-box.fund{border-left:4px solid var(--attention)}
+.dist-box b{font:700 14px var(--head);display:block;margin-bottom:4px}
+.dist-box.leak b{color:#E05252}
+.dist-box.fund b{color:var(--attention)}
+.dist-box p{margin:0;font-size:12.5px;color:var(--muted);line-height:1.45}
+.flywheel-conclusion{margin-top:20px;padding:18px 22px;border-radius:14px;background:var(--bg);border:1.5px solid var(--line);font-size:14.5px;line-height:1.6;color:var(--ink);min-width:0}
+.flywheel-conclusion strong{color:var(--attention)}
+
+/* modern guided-story emphasis */
+.pipeline-focus{border-radius:24px !important;border:1px solid color-mix(in srgb,var(--attention) 26%,var(--line));background:linear-gradient(135deg,color-mix(in srgb,var(--surface) 90%,var(--attention)),var(--surface));box-shadow:0 22px 58px rgba(14,124,134,.11);scroll-margin-top:82px}
+.pipeline-focus .sim-controls span{font:700 22px/1.15 var(--head) !important}
+.pipeline-focus .pipe-rail{gap:10px}
+.pipeline-focus .pipe-stage{border-radius:18px;padding:16px 12px;background:var(--surface)}
+.pipeline-focus .pipe-stage b{font:700 16px/1.15 var(--head)}
+.pipeline-focus .pipe-play{width:48px;height:48px;flex-basis:48px;box-shadow:0 14px 30px rgba(14,124,134,.28)}
+.tabs{position:sticky;top:63px;z-index:80;background:color-mix(in srgb,var(--bg) 88%,transparent);backdrop-filter:blur(12px);padding:10px 0;margin:20px 0 22px}
+.tab{border-radius:18px;background:color-mix(in srgb,var(--surface) 90%,var(--bg));box-shadow:0 10px 26px rgba(19,32,43,.05)}
+.panel{border-radius:26px;box-shadow:0 24px 64px rgba(19,32,43,.08);margin-bottom:34px;scroll-margin-top:118px}
+.panel[hidden]{display:block}
+.panel h2{font-size:clamp(30px,4vw,42px)}
+.sim-chart-wrap{border-radius:20px}
+.storyboard-section{border-top:0;margin-top:64px;padding-top:0;scroll-margin-top:98px}
+.storyboard-head{border-radius:26px;padding:28px;background:linear-gradient(135deg,color-mix(in srgb,var(--surface) 86%,var(--c,var(--attention))),var(--surface));border:1px solid color-mix(in srgb,var(--c,var(--attention)) 24%,var(--line));box-shadow:0 20px 46px rgba(19,32,43,.08)}
+.storyboard-head .badge{background:color-mix(in srgb,var(--c,var(--attention)) 16%,transparent);color:var(--c,var(--attention))}
+.story-track{border-left:0;margin-left:0;padding-left:0;gap:26px;counter-reset:story}
+.story-step{border-radius:26px;padding:28px 30px 30px;box-shadow:0 18px 48px rgba(19,32,43,.07);border-color:color-mix(in srgb,var(--c,var(--attention)) 18%,var(--line));overflow:hidden}
+.story-step:before{content:"";position:absolute;inset:0 auto 0 0;width:6px;background:var(--c,var(--attention))}
+.story-step:hover{border-color:var(--c,var(--attention));transform:translateY(-2px)}
+.story-marker{left:auto;right:22px;top:22px;width:46px;height:46px;border-radius:16px;background:color-mix(in srgb,var(--c,var(--attention)) 13%,var(--surface));border-color:color-mix(in srgb,var(--c,var(--attention)) 42%,var(--line));box-shadow:none;color:var(--c,var(--attention))}
+.story-tag{color:var(--c,var(--attention))}
+.contrast-card,.metric-box,.level-card,.dist-box,.crypto-card,.pred-card,.dash-item,.pipe-node{border-radius:16px}
+.metric-box:hover{border-color:var(--c,var(--attention))}
+.pipe-node{border-top:3px solid var(--c,var(--attention))}
+
+@media(max-width:900px){
+  .guided-stepper{gap:12px}
+  .guide-icon{width:92px;height:92px}
+  .guide-icon svg{width:38px;height:38px}
+  .guide-step b{font-size:18px}
+  .guide-step:after{width:66px}
+  .guide-arrow{font-size:32px;margin-top:-24px}
+}
+
+@media(max-width:768px){
+  .hero-shell{gap:18px}
+  .hero-copy h1{max-width:100%}
+  .guided-stepper{grid-template-columns:1fr;gap:16px}
+  .guide-arrow{transform:rotate(90deg);margin:0;font-size:34px}
+  .wrap{padding:24px 16px 56px}
+  .story-track{margin-left:0;padding-left:0;gap:22px}
+  .story-marker{right:14px;width:34px;height:34px;font-size:11px;top:14px;border-radius:12px}
+  .contrast-grid,.levels-grid,.pipeline-flow,.flywheel-container,.sim-status,.pred-spectrum,.crypto-realities-grid,.dash-grid,.touch-hub-grid{grid-template-columns:1fr !important}
+  .touch-hub-group{padding:14px 14px}
+  .metrics-grid,.metrics-grid-7,.metrics-grid-9{grid-template-columns:1fr 1fr}
+  .story-step{padding:18px 16px}
+}
+
+@media(max-width:580px){
+  .wrap{padding:18px 12px 48px;overflow-x:hidden}
+  .top-bar-inner{padding:10px 12px}
+  .hero-shell{margin-top:6px}
+  .hero-actions{gap:8px}
+  .hero-link{width:100%;justify-content:center}
+  .guide-icon{width:92px;height:92px}
+  .guide-icon svg{width:38px;height:38px}
+  .guide-step b{font-size:19px}
+  .section-intro{grid-template-columns:1fr;text-align:left}
+  .metrics-grid,.metrics-grid-7,.metrics-grid-9{grid-template-columns:1fr !important}
+  .story-step [style*="grid-column"],.span-full{grid-column:span 1 !important}
+  .tabs{gap:6px}
+  .tab{padding:9px 6px 6px;border-radius:11px}
+  .tab b{font-size:13.5px}
+  .panel{padding:14px 12px;border-radius:14px}
+  .story-track{margin-left:0;padding-left:0;gap:22px}
+  .story-step{padding:15px 12px;border-radius:14px}
+  .story-marker{left:auto;right:12px;width:28px;height:28px;font-size:10px;top:12px;border-radius:10px}
+  .contrast-list li{flex-direction:column;gap:2px}
+  .contrast-list li span.label{min-width:0;font-size:12px;font-weight:600}
+  .sim-formula{font-size:12px;padding:8px 10px}
+  .sim-chart-wrap{padding:12px 10px}
+  .back-to-top{bottom:18px;right:18px;padding:8px 13px;font-size:12px}
+  .theme-toggle{width:34px;height:34px}
+  .brand-logo{width:30px;height:30px}
+  .brand-name{font-size:17px}
+  .ratio-box{padding:14px 12px}
+  .cash-dashboard-wrap{padding:14px 12px}
+}
+
+@media(max-width:360px){
+  .brand-name{font-size:14px}
+  .tab b{font-size:12px}
+  .top-bar-inner{padding:8px 10px}
+}
+
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+<header class="top-bar">
+  <div class="top-bar-inner">
+    <a href="#" class="brand" aria-label="RanchiMall">
+      <img src="logo.png" alt="RanchiMall logo" class="brand-logo" width="36" height="36">
+      <span class="brand-name">RanchiMall</span>
+    </a>
+    <div class="header-right">
+      <button class="theme-toggle" id="theme-toggle" type="button" aria-label="Toggle dark and light theme" title="Toggle theme">
+        <svg class="icon-sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <circle cx="12" cy="12" r="4"></circle>
+          <path d="M12 2v2"></path>
+          <path d="M12 20v2"></path>
+          <path d="m4.93 4.93 1.41 1.41"></path>
+          <path d="m17.66 17.66 1.41 1.41"></path>
+          <path d="M2 12h2"></path>
+          <path d="M20 12h2"></path>
+          <path d="m6.34 17.66 1.41-1.41"></path>
+          <path d="m19.07 4.93-1.41 1.41"></path>
+        </svg>
+        <svg class="icon-moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"></path>
+        </svg>
+      </button>
+    </div>
+  </div>
+</header>
+<main class="wrap">
+  <section class="hero-shell" aria-label="Self Funding Blockchain Systems">
+    <div class="hero-copy">
+      <h1>Self Funding Blockchain Systems</h1>
+      <p class="kicker">Attention, Consumption, Cashflow</p>
+      <p class="sub">Three layers of the same loop. Each one has to grow on average over time.</p>
+      <div class="hero-actions">
+        <a class="hero-link" href="#score-simulators">Score Simulators →</a>
+        <a class="hero-link" href="#full-cycle-pipeline">Full Cycle Pipeline →</a>
+        <a class="hero-link" href="#case-study-actions">Case Studies →</a>
+      </div>
+    </div>
+    <div class="guided-stepper" aria-label="Attention to Consumption to Cashflow to Self-Funding">
+      <div class="guide-step attention">
+        <span class="guide-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"/><circle cx="12" cy="12" r="3"/></svg>
+        </span>
+        <b>Attention</b>
+      </div>
+      <span class="guide-arrow" aria-hidden="true">→</span>
+      <div class="guide-step consumption">
+        <span class="guide-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.4 12.4a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 2-1.6L21 7H5.12"/></svg>
+        </span>
+        <b>Consumption</b>
+      </div>
+      <span class="guide-arrow" aria-hidden="true">→</span>
+      <div class="guide-step cashflow">
+        <span class="guide-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="7" ry="3"/><path d="M5 5v6c0 1.7 3.1 3 7 3s7-1.3 7-3V5"/><path d="M5 11v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg>
+        </span>
+        <b>Cashflow</b>
+      </div>
+      <span class="guide-arrow" aria-hidden="true">→</span>
+      <div class="guide-step self">
+        <span class="guide-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 21h18"/><path d="M7 17v-5"/><path d="M12 17V7"/><path d="M17 17v-9"/><path d="m7 12 5-5 3 3 5-6"/></svg>
+        </span>
+        <b>Self-Funding</b>
+      </div>
+    </div>
+  </section>
+
+  <!-- DIRECT TOUCH HUB (Case Studies & Score Simulators) -->
+  <section class="touch-hub" aria-label="Quick Access Touch Panels">
+    <div class="touch-hub-group sim-primary" id="score-simulators">
+      <div class="touch-hub-head">
+        <span class="touch-hub-badge sim">⚡ Score Simulators</span>
+        <span class="touch-hub-sub">Interactive Weighting &amp; Anti-Bot Calculations</span>
+      </div>
+      <div class="touch-hub-grid">
+        <button type="button" class="touch-card touch-card-attn" data-target-tab="t-attention" data-target-scroll="sim-attention">
+          <span class="touch-card-tag">⚡ Attention Simulator</span>
+          <strong class="touch-card-title">Attention Score Model</strong>
+          <span class="touch-card-desc">High (3pt), Med (1pt), Low (0.1pt) weighting</span>
+          <span class="touch-card-action">Launch Simulator →</span>
+        </button>
+
+        <button type="button" class="touch-card touch-card-cons" data-target-tab="t-consumption" data-target-scroll="sim-consumption">
+          <span class="touch-card-tag">⚡ Consumption Simulator</span>
+          <strong class="touch-card-title">Consumption Score Model</strong>
+          <span class="touch-card-desc">Anti-bot 5x cap filter &amp; FLO ID unique users</span>
+          <span class="touch-card-action">Launch Simulator →</span>
+        </button>
+
+        <button type="button" class="touch-card touch-card-cash" data-target-tab="t-cashflow" data-target-scroll="sim-cashflow">
+          <span class="touch-card-tag">⚡ Cashflow Simulator</span>
+          <strong class="touch-card-title">Cashflow Quality Score Model</strong>
+          <span class="touch-card-desc">Recurring predictability vs volatile windfall</span>
+          <span class="touch-card-action">Launch Simulator →</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  <!-- FULL CYCLE PIPELINE (horizontal) -->
+  <div class="sim-chart-wrap pipeline-focus" id="full-cycle-pipeline" style="margin-bottom: 16px; padding: 16px;">
+    <div class="sim-controls" style="justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: nowrap;">
+      <span style="font-weight: 700; color: var(--ink); font-size: 16px;">Full Cycle Pipeline</span>
+      <button class="pipe-play" id="simulate-full-cycle-btn" type="button" aria-label="Run winning cycle" title="Run winning cycle">
+        <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5v14l11-7z"/></svg>
+      </button>
+    </div>
+    <div id="pipeline-visual" class="pipe-rail">
+      <div id="pipe-stage-attention" class="metric-box pipe-stage" style="border-top: 3.5px solid var(--attention);">
+          <b>1. Attention</b>
+          <p id="pipe-attn-numbers" style="margin: 2px 0; font-size: 12px;" hidden>Score: <span id="pipe-attn-score">-</span> | Cutoff: <span id="pipe-attn-cutoff">-</span></p>
+          <span id="pipe-attn-status" class="pipe-status">Pending</span>
+      </div>
+      <div class="pipeline-arrow" id="arrow-1" style="color: var(--line);"><span>→</span></div>
+      <div id="pipe-stage-consumption" class="metric-box pipe-stage" style="border-top: 3.5px solid var(--consumption); opacity: 0.4;">
+          <b>2. Consumption</b>
+          <p id="pipe-cons-numbers" style="margin: 2px 0; font-size: 12px;" hidden>Score: <span id="pipe-cons-score">-</span> | Cutoff: <span id="pipe-cons-cutoff">-</span></p>
+          <span id="pipe-cons-status" class="pipe-status">Pending</span>
+      </div>
+      <div class="pipeline-arrow" id="arrow-2" style="color: var(--line);"><span>→</span></div>
+      <div id="pipe-stage-cashflow" class="metric-box pipe-stage" style="border-top: 3.5px solid var(--cashflow); opacity: 0.4;">
+          <b>3. Cashflow</b>
+          <p id="pipe-cash-numbers" style="margin: 2px 0; font-size: 12px;" hidden>Score: <span id="pipe-cash-score">-</span> | Cutoff: <span id="pipe-cash-cutoff">-</span></p>
+          <span id="pipe-cash-status" class="pipe-status">Pending</span>
+      </div>
+      <div class="pipeline-arrow" id="arrow-3" style="color: var(--line);"><span>→</span></div>
+      <div id="pipe-stage-selffunding" class="metric-box pipe-stage" style="border-top: 3.5px solid var(--attention); opacity: 0.4; background: rgba(14,124,134,0.1);">
+          <b>4. Self-Funding</b>
+          <p style="margin: 2px 0; font-size: 12px;">Fully sustainable.</p>
+          <span id="pipe-self-status" class="pipe-status">Locked</span>
+      </div>
+    </div>
+  </div>
+
+  <section class="touch-hub" id="case-study-actions" aria-label="Case Studies Touch Panels">
+    <div class="touch-hub-group">
+      <div class="touch-hub-head">
+        <span class="touch-hub-badge">📖 Case Studies</span>
+        <span class="touch-hub-sub">10-Year Deep Dives &amp; Economic Models</span>
+      </div>
+      <div class="touch-hub-grid">
+        <button type="button" class="touch-card touch-card-attn" data-target-tab="t-attention" data-target-scroll="case-study">
+          <span class="touch-card-tag">● Attention Model</span>
+          <strong class="touch-card-title">10 Engaged Views vs. 1M Views</strong>
+          <span class="touch-card-desc">Audience quality &amp; Navier–Stokes vs Doge meme</span>
+          <span class="touch-card-action">Explore Case Study →</span>
+        </button>
+
+        <button type="button" class="touch-card touch-card-cons" data-target-tab="t-consumption" data-target-scroll="case-study-consumption">
+          <span class="touch-card-tag">● Consumption Model</span>
+          <strong class="touch-card-title">1,000 Builders vs. 100K Churn</strong>
+          <span class="touch-card-desc">7 Rules of utility &amp; compute-burn vs retention</span>
+          <span class="touch-card-action">Explore Case Study →</span>
+        </button>
+
+        <button type="button" class="touch-card touch-card-cash" data-target-tab="t-cashflow" data-target-scroll="case-study-cashflow">
+          <span class="touch-card-tag">● Cashflow Model</span>
+          <strong class="touch-card-title">Recurring Cash vs. One-Time Windfall</strong>
+          <span class="touch-card-desc">Self-Funding Ratio &amp; blockchain realities</span>
+          <span class="touch-card-action">Explore Case Study →</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+<div class="tabs" role="tablist" aria-label="Sections">
+    <button class="tab" role="tab" id="t-attention" aria-controls="p-attention" aria-selected="true" style="--c:var(--attention)"><b>Attention</b><small>People notice</small><svg data-spark="0"></svg></button>
+    <button class="tab" role="tab" id="t-consumption" aria-controls="p-consumption" aria-selected="false" tabindex="-1" style="--c:var(--consumption)"><b>Consumption</b><small>People use</small><svg data-spark="1"></svg></button>
+    <button class="tab" role="tab" id="t-cashflow" aria-controls="p-cashflow" aria-selected="false" tabindex="-1" style="--c:var(--cashflow)"><b>Cashflow</b><small>Money moves</small><svg data-spark="2"></svg></button>
+  </div>
+
+  <section class="panel" role="tabpanel" id="p-attention" aria-labelledby="t-attention" style="--c:var(--attention)">
+    <div class="section-intro">
+      <span class="section-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M2 12s3.5-6 10-6 10 6 10 6-3.5 6-10 6-10-6-10-6Z"/><circle cx="12" cy="12" r="3"/></svg>
+      </span>
+      <div>
+        <h2>Attention</h2>
+        <p class="lead">Attention has to grow on average. These are the 16 places it shows up and how each one is measured.</p>
+      </div>
+    </div>
+    <!-- Attention Simulator -->
+    <div class="sim-chart-wrap" id="sim-attention" style="margin-bottom: 24px;">
+      <div class="sim-controls">
+        <span>Attention Score Simulator</span>
+        <button class="sim-btn active" id="simulate-attention-btn" type="button">Generate Random Inputs</button>
+      </div>
+      <div style="font-size: 13px; color: var(--muted); line-height: 1.55; margin-bottom: 12px;">
+        <b style="color: var(--ink);">How to read this:</b><br>
+        <span style="color: var(--denom); font-weight: 600;">Total Impressions</span> = simple views + unique viewers (raw reach).<br>
+        <span style="color: var(--attention); font-weight: 600;">High-Value (3 pts)</span> = high audience quality, propagation (shares, remixes) and influence (new projects built).<br>
+        <span style="color: var(--consumption); font-weight: 600;">Medium-Value (1 pt)</span> = depth of attention (high watch time, completion rate, repeat viewing).<br>
+        <span style="color: var(--cashflow); font-weight: 600;">Low-Value (0.1 pts)</span> = raw reach (simple views, unique viewers).
+        <div class="sim-formula">Attention Score = ((High * 3) + (Medium * 1) + (Low * 0.1)) / Total Impressions</div>
+      </div>
+      <div id="attention-sim-output" style="font-family: monospace; font-size: 13.5px; color: var(--ink); line-height: 1.6;">
+        <p style="color: var(--muted); margin: 0;">Click "Generate Random Inputs" to run the simulation.</p>
+      </div>
+    </div>
+    <div class="chart-head"><span>Average trend</span><strong data-slope="0"></strong></div>
+    <svg class="chart" data-chart="0" viewBox="0 0 640 250" role="img" aria-label="Attention growing over 24 months"></svg>
+    <div class="legend"><span><i></i>Attention</span><span><i class="d"></i>Average trend</span><span>Illustrative data</span></div>
+    <div class="list-head"><span>Type</span><span>Examples</span><span>How it's measured</span></div>
+    <div id="rows"></div>
+
+    <!-- CASE STUDY: YOUTUBE AS AN ATTENTION MODEL (CONNECTED VERTICAL STORYBOARD) -->
+  <div class="storyboard-section" id="case-study">
+    <div class="storyboard-head">
+      <span class="badge">Case Study · Sample Example</span>
+      <h2>YouTube Views as an Attention Model for Self-Funding Systems</h2>
+      <p>Why 10 deeply engaged views generate more 10-year value than 1,000,000 viral views. A walkthrough of how attention converts into sustainable economic self-funding.</p>
+    </div>
+
+    <div class="story-track">
+
+      <!-- STEP 1: The Core Paradox & 3 Layers -->
+      <div class="story-step">
+        <div class="story-marker">01</div>
+        <span class="story-tag">Core Paradox & The 3 Layers</span>
+        <h3 class="story-title">Views Do Not Mean Impact: 10 Engaged Views vs. 1,000,000 Meme Views</h3>
+        <p class="story-desc">YouTube view count measures raw reach, but not the actual economic impact. While a viral Dogecoin meme video attracts millions of viewers who vanish in weeks, a scientific video on the Navier–Stokes equation attracts researchers and developers who write code, build AI applications, and sustain the ecosystem for 10 years.</p>
+        
+        <div class="contrast-grid">
+          <div class="contrast-card meme">
+            <h4><span>Video A: Viral Meme</span> <span class="stat-pill">1,000,000 Views</span></h4>
+            <ul class="contrast-list">
+              <li><span class="label">Audience:</span> <span>Passive scrollers, internet entertainment</span></li>
+              <li><span class="label">Builder Conversion:</span> <span>0 developers, 0 applications</span></li>
+              <li><span class="label">Persistence:</span> <span>Declines to near-zero within 3 weeks</span></li>
+              <li><span class="label">10-Yr Funding:</span> <span><strong>$0</strong> sustained project revenue</span></li>
+            </ul>
+          </div>
+          <div class="contrast-card science">
+            <h4><span>Video B: Navier–Stokes</span> <span class="stat-pill">5,000 Views</span></h4>
+            <ul class="contrast-list">
+              <li><span class="label">Audience:</span> <span>Researchers, software engineers, builders</span></li>
+              <li><span class="label">Builder Conversion:</span> <span>Code contributions, new AI apps built</span></li>
+              <li><span class="label">Persistence:</span> <span>Compounds over months and years</span></li>
+              <li><span class="label">10-Yr Funding:</span> <span><strong>Sustainable</strong> recurring protocol fees</span></li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="pipeline-flow">
+          <div class="pipe-node" style="--c:var(--attention)">
+            <span class="pipe-num">Layer 1</span>
+            <div class="pipe-name">Attention</div>
+            <div class="pipe-examples">What did we attract? Watch time, audience retention, shares, interest from researchers, developers, and investors.</div>
+          </div>
+          <div class="pipe-node" style="--c:var(--consumption)">
+            <span class="pipe-num">Layer 2</span>
+            <div class="pipe-name">Consumption</div>
+            <div class="pipe-examples">What did people do? Returning viewers, project site visits, using Music AI, repo contributions, token swaps.</div>
+          </div>
+          <div class="pipe-node" style="--c:var(--cashflow)">
+            <span class="pipe-num">Layer 3</span>
+            <div class="pipe-name">Cash Flow</div>
+            <div class="pipe-examples">What value was generated? YouTube ad rev, paid product usage, blockchain tx fees, royalties from related services.</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 2: 6 Types of Attention Impact -->
+      <div class="story-step">
+        <div class="story-marker">02</div>
+        <span class="story-tag">Evaluation Framework</span>
+        <h3 class="story-title">Beyond Vanity Views: The 6 Types of Attention Impact</h3>
+        <p class="story-desc">View count alone cannot capture whether attention is economically productive. These six qualitative metrics distinguish temporary viral attention from attention that continues to generate compounding value over time.</p>
+        
+        <div class="metrics-grid">
+          <div class="metric-box">
+            <b>1. Reach</b>
+            <p>How many people encounter the content.</p>
+            <span class="metric-ex">Views and unique viewers</span>
+          </div>
+          <div class="metric-box">
+            <b>2. Depth of Attention</b>
+            <p>How deeply people engage with the content.</p>
+            <span class="metric-ex">Watch time, completion rate, repeat viewing</span>
+          </div>
+          <div class="metric-box">
+            <b>3. Audience Quality</b>
+            <p>Whether attention comes from relevant actors.</p>
+            <span class="metric-ex">Researchers, developers, investors, users</span>
+          </div>
+          <div class="metric-box">
+            <b>4. Attention Propagation</b>
+            <p>Whether viewers spread the idea further.</p>
+            <span class="metric-ex">Shares, citations, remixes, external links</span>
+          </div>
+          <div class="metric-box">
+            <b>5. Persistence</b>
+            <p>Whether attention continues over time.</p>
+            <span class="metric-ex">Discussions & views continuing years later</span>
+          </div>
+          <div class="metric-box">
+            <b>6. Influence & Outcomes</b>
+            <p>Whether attention leads to meaningful outcomes.</p>
+            <span class="metric-ex">New projects, code PRs, integrations, tools</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 3: 10-Year Simulation (Meme vs Navier-Stokes) -->
+      <div class="story-step">
+        <div class="story-marker">03</div>
+        <span class="story-tag">10-Year Trajectory</span>
+        <h3 class="story-title">Comparing Trajectories: Viral Meme vs. Scientific Discovery</h3>
+        <p class="story-desc">Video A dominates the first 30 days in vanity reach. Video B starts small but builds compounding cumulative value as developers build tools, launch AI applications, and generate protocol cash flows over a 10-year horizon.</p>
+
+        <div class="sim-controls">
+          <span>Inspect Milestone:</span>
+          <button type="button" class="sim-btn active" data-sim="0">Month 1</button>
+          <button type="button" class="sim-btn" data-sim="1">Year 1</button>
+          <button type="button" class="sim-btn" data-sim="2">Year 5</button>
+          <button type="button" class="sim-btn" data-sim="3">Year 10</button>
+        </div>
+
+        <div class="sim-chart-wrap">
+          <svg viewBox="0 0 640 220" role="img" aria-label="10-Year Comparison: Meme vs Science">
+            <!-- Grid Lines -->
+            <line x1="50" y1="30" x2="610" y2="30" stroke="var(--line)" stroke-dasharray="4 4" />
+            <line x1="50" y1="70" x2="610" y2="70" stroke="var(--line)" stroke-dasharray="4 4" />
+            <line x1="50" y1="110" x2="610" y2="110" stroke="var(--line)" stroke-dasharray="4 4" />
+            <line x1="50" y1="150" x2="610" y2="150" stroke="var(--line)" stroke-dasharray="4 4" />
+            <line x1="50" y1="190" x2="610" y2="190" stroke="var(--line)" />
+
+            <!-- Time Labels -->
+            <text x="60" y="208" font-size="11" fill="var(--muted)" font-family="var(--body)" text-anchor="middle">M1</text>
+            <text x="140" y="208" font-size="11" fill="var(--muted)" font-family="var(--body)" text-anchor="middle">M6</text>
+            <text x="220" y="208" font-size="11" fill="var(--muted)" font-family="var(--body)" text-anchor="middle">Y1</text>
+            <text x="320" y="208" font-size="11" fill="var(--muted)" font-family="var(--body)" text-anchor="middle">Y3</text>
+            <text x="420" y="208" font-size="11" fill="var(--muted)" font-family="var(--body)" text-anchor="middle">Y5</text>
+            <text x="520" y="208" font-size="11" fill="var(--muted)" font-family="var(--body)" text-anchor="middle">Y8</text>
+            <text x="610" y="208" font-size="11" fill="var(--muted)" font-family="var(--body)" text-anchor="middle">Y10</text>
+
+            <!-- Video A: Meme (Spike then zero) -->
+            <polyline points="60,30 100,120 140,175 180,190 220,190 320,190 420,190 520,190 610,190" fill="none" stroke="#E05252" stroke-width="2.5" stroke-dasharray="6 4" stroke-linecap="round" />
+
+            <!-- Video B: Science (Compounding) -->
+            <polyline points="60,182 140,176 220,165 320,140 420,105 520,68 610,32" fill="none" stroke="var(--attention)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+
+            <!-- Dynamic Indicator Line -->
+            <line id="sim-indicator" x1="60" y1="20" x2="60" y2="190" stroke="var(--ink)" stroke-width="2" stroke-dasharray="4 3" opacity=".8" />
+            <circle id="sim-point-meme" cx="60" cy="30" r="5" fill="#E05252" />
+            <circle id="sim-point-science" cx="60" cy="182" r="5" fill="var(--attention)" />
+          </svg>
+
+          <div class="sim-legend">
+            <span><i class="meme"></i>Video A (Viral Meme: High initial spike, rapid decay)</span>
+            <span><i class="science"></i>Video B (Science: Compounding 10-year value)</span>
+          </div>
+
+          <div class="sim-status">
+            <div class="sim-status-col meme">
+              <b id="sim-meme-title">Video A (Meme) · Month 1</b>
+              <p id="sim-meme-desc">1,000,000 views · $140 quick ad revenue · 0 code commits · 0 developer inquiries. Attention peaks immediately.</p>
+            </div>
+            <div class="sim-status-col science">
+              <b id="sim-science-title">Video B (Science) · Month 1</b>
+              <p id="sim-science-desc">5,000 views · $1 ad revenue · 2 academic researchers reach out · Initial seed of high-agency attention planted.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- STEP 4: 10-Year Framework (Two Independent Levels) -->
+      <div class="story-step">
+        <div class="story-marker">04</div>
+        <span class="story-tag">Accounting Architecture</span>
+        <h3 class="story-title">Measuring Over 10 Years: Two Independent Levels</h3>
+        <p class="story-desc">To establish a sustainable accounting model, metrics are tracked at two separate levels. Keeping them strictly separated prevents counting the same outcome twice as both attention and consumption.</p>
+
+        <div class="levels-grid">
+          <div class="level-card">
+            <h4>Level A: Attention Generated</h4>
+            <p>Measures the raw fuel flowing into the ecosystem:</p>
+            <ul>
+              <li>Reach & unique viewers</li>
+              <li>Depth of attention & watch duration</li>
+              <li>Audience quality (researchers, developers, builders)</li>
+              <li>Propagation (citations, remixes, mentions)</li>
+              <li>Persistence across months and years</li>
+            </ul>
+          </div>
+          <div class="level-card">
+            <h4>Level B: Outcomes Created by Attention</h4>
+            <p>Measures the resulting downstream activity:</p>
+            <ul>
+              <li>New user accounts & returning visitors</li>
+              <li>Developer contributions & GitHub pull requests</li>
+              <li>Usage of AI applications (Music AI, etc.)</li>
+              <li>Token swaps & blockchain transaction volume</li>
+              <li>Proportion of dev costs covered by protocol fees</li>
+            </ul>
+          </div>
+        </div>
+
+        <div class="score-banner">
+          <b>Weighted Attention Impact Score:</b> As 10 years of historical data accumulate, the mathematical relationship between Level A attention sources and Level B revenue outcomes forms a predictive score—directing resources toward attention that actually self-funds development.
+        </div>
+      </div>
+
+      <!-- STEP 5: Tokenization & The Self-Funding Flywheel -->
+      <div class="story-step">
+        <div class="story-marker">05</div>
+        <span class="story-tag">The Closed Loop</span>
+        <h3 class="story-title">Tokenized Views vs. Real Revenue: The Self-Funding Flywheel</h3>
+        <p class="story-desc">Views can potentially be represented by tokens on a blockchain, creating a market around attention. However, token trading volume is not revenue received by the project. The system must capture real economic fees to reinvest into building.</p>
+
+        <div class="flywheel-container">
+          <div class="flywheel-svg-wrap">
+            <svg viewBox="0 0 380 380" role="img" aria-label="Self Funding Flywheel Loop">
+              <!-- Orbit Ring -->
+              <circle cx="190" cy="190" r="125" fill="none" stroke="var(--line)" stroke-width="2.5" />
+              <circle cx="190" cy="190" r="125" fill="none" stroke="var(--attention)" stroke-width="3" stroke-dasharray="14 10" class="rotating-ring" />
+
+              <!-- Center Hub -->
+              <circle cx="190" cy="190" r="48" fill="var(--surface)" stroke="var(--attention)" stroke-width="2" />
+              <text x="190" y="184" text-anchor="middle" font-size="11" font-weight="700" fill="var(--muted)" font-family="var(--head)">10-YEAR</text>
+              <text x="190" y="202" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)" font-family="var(--head)">SELF-FUNDING</text>
+
+              <!-- Node 1: Attention (Top) -->
+              <circle cx="190" cy="65" r="28" fill="var(--surface)" stroke="var(--attention)" stroke-width="2.5" />
+              <text x="190" y="69" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--ink)" font-family="var(--head)">ATTENTION</text>
+
+              <!-- Node 2: Consumption (Top Right) -->
+              <circle cx="309" cy="151" r="28" fill="var(--surface)" stroke="var(--consumption)" stroke-width="2.5" />
+              <text x="309" y="155" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink)" font-family="var(--head)">CONSUMPTION</text>
+
+              <!-- Node 3: Economic Activity (Bottom Right) -->
+              <circle cx="264" cy="291" r="28" fill="var(--surface)" stroke="var(--cashflow)" stroke-width="2.5" />
+              <text x="264" y="287" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)" font-family="var(--head)">ECONOMIC</text>
+              <text x="264" y="299" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)" font-family="var(--head)">ACTIVITY</text>
+
+              <!-- Node 4: Revenue Received (Bottom Left) -->
+              <circle cx="116" cy="291" r="28" fill="var(--surface)" stroke="var(--attention)" stroke-width="2.5" />
+              <text x="116" y="287" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)" font-family="var(--head)">REVENUE</text>
+              <text x="116" y="299" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)" font-family="var(--head)">RECEIVED</text>
+
+              <!-- Node 5: Reinvestment (Top Left) -->
+              <circle cx="71" cy="151" r="28" fill="var(--surface)" stroke="var(--consumption)" stroke-width="2.5" />
+              <text x="71" y="155" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)" font-family="var(--head)">REINVESTMENT</text>
+            </svg>
+          </div>
+
+          <div class="token-distinction">
+            <div class="dist-box leak">
+              <b>Speculative Volume (Leaky System)</b>
+              <p>When Trader A buys an attention token from Trader B, the payment transfers between holders. The project receives <strong>$0</strong> to pay engineers or host AI models.</p>
+            </div>
+            <div class="dist-box fund">
+              <b>Protocol Fee Capture (Self-Funding Flywheel)</b>
+              <p>The project earns sustainable revenue through transaction fees, AI app usage, and swaps. This capital directly funds continuous development, sparking new high-quality attention.</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="flywheel-conclusion">
+          <strong>Conclusion:</strong> Attention must not be judged merely by the number of views, but by the relevance of the audience, how long interest persists, whether the idea propagates, and what that attention enables people to build. Over a 10-year period, this closed loop measures whether an attention-driven economic system generates enough economic value to <strong>fund its own growth</strong>.
+        </div>
+      </div>
+
+    </div>
+  </div>
+  </section>
+
+  <section class="panel" role="tabpanel" id="p-consumption" aria-labelledby="t-consumption" style="--c:var(--consumption)">
+    <div class="section-intro">
+      <span class="section-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><circle cx="8" cy="21" r="1"/><circle cx="19" cy="21" r="1"/><path d="M2.05 2.05h2l2.4 12.4a2 2 0 0 0 2 1.6h8.9a2 2 0 0 0 2-1.6L21 7H5.12"/></svg>
+      </span>
+      <div>
+        <h2>Consumption</h2>
+        <p class="lead">Consumption has to grow on average.</p>
+      </div>
+    </div>
+
+    <!-- Consumption Simulator -->
+    <div class="sim-chart-wrap" id="sim-consumption" style="margin-bottom: 24px;">
+      <div class="sim-controls">
+        <span>Consumption Score Simulator</span>
+        <button class="sim-btn active" id="simulate-consumption-btn" type="button">Generate Random Inputs</button>
+      </div>
+      <div style="font-size: 13px; color: var(--muted); line-height: 1.55; margin-bottom: 12px;">
+        <b style="color: var(--ink);">How to read this:</b><br>
+        <span style="color: var(--denom); font-weight: 600;">Unique Users</span> = total number of FLO IDs interacting with our app.<br>
+        <span style="color: var(--attention); font-weight: 600;">High-Value (3 pts)</span> = completed interchain swaps, main token buys with USDAI, published AI tracks and taskboard task completions (capped at 5 per user, anti-bot).<br>
+        <span style="color: var(--consumption); font-weight: 600;">Medium-Value (1 pt)</span> = track likes, adjusted plays (listening to &gt;80% of a track).<br>
+        <span style="color: var(--cashflow); font-weight: 600;">Low-Value (0.1 pts)</span> = app opens and passive plays (listening to &lt;10 seconds).
+        <div class="sim-formula sim-formula-cons">Consumption Score = ((High * 3) + (Medium * 1) + (Low * 0.1)) / Unique Users</div>
+      </div>
+      <div id="consumption-sim-output" style="font-family: monospace; font-size: 13.5px; color: var(--ink); line-height: 1.6;">
+        <p style="color: var(--muted); margin: 0;">Click "Generate Random Inputs" to run the simulation.</p>
+      </div>
+    </div>
+    <div class="chart-head"><span>Average trend</span><strong data-slope="1"></strong></div>
+    <svg class="chart" data-chart="1" viewBox="0 0 640 250" role="img" aria-label="Consumption growing over 24 months"></svg>
+    <div class="legend"><span><i></i>Consumption</span><span><i class="d"></i>Average trend</span><span>Illustrative data</span></div>
+
+    <!-- CASE STUDY: CONSUMPTION MODEL (CONNECTED VERTICAL STORYBOARD) -->
+    <div class="storyboard-section" id="case-study-consumption" style="--c:var(--consumption)">
+      <div class="storyboard-head">
+        <span class="badge" style="background:rgba(75,82,214,.14);color:var(--consumption)">Case Study · Consumption Model</span>
+        <h2>YouTube as a Model for Consumption in an Attention-Driven Economy</h2>
+        <p>Why 1,000 high-utility, persistent users create more 10-year value than 100,000 one-and-done users. A walkthrough of measuring genuine utility, outcomes, and resource efficiency.</p>
+      </div>
+
+      <div class="story-track" style="border-left-color:var(--line)">
+
+        <!-- STEP 1: The Utility Paradox & 3 Layers of Consumption -->
+        <div class="story-step" style="--step-c:var(--consumption)">
+          <div class="story-marker" style="border-color:var(--consumption);color:var(--consumption)">01</div>
+          <span class="story-tag" style="color:var(--consumption)">Utility Paradox & The 3 Layers</span>
+          <h3 class="story-title">Quantity vs. Value: 1,000 High-Utility Users vs. 100,000 Churn Users</h3>
+          <p class="story-desc">Attention measures the interest a product attracts, but consumption measures what people actually watch, use, create, or participate in as a result. An AI application attracting 100,000 one-time experimenters creates massive server costs with little lasting value. Another application with 1,000 regular creators publishing music and building tools generates compounding economic sustainability.</p>
+          
+          <div class="contrast-grid">
+            <div class="contrast-card meme">
+              <h4><span>Product A: Low-Retention AI App</span> <span class="stat-pill">100,000 Users</span></h4>
+              <ul class="contrast-list">
+                <li><span class="label">Usage Pattern:</span> <span>Most users generate 1 output and leave</span></li>
+                <li><span class="label">Output Utility:</span> <span>Few outputs used beyond initial experiment</span></li>
+                <li><span class="label">Compute Cost:</span> <span>High operating costs relative to value</span></li>
+                <li><span class="label">10-Yr Funding:</span> <span><strong>$0</strong> sustained value; usage collapses</span></li>
+              </ul>
+            </div>
+            <div class="contrast-card" style="border-top:3.5px solid var(--consumption)">
+              <h4><span>Product B: High-Utility AI App</span> <span class="stat-pill" style="background:rgba(75,82,214,.14);color:var(--consumption)">1,000 Users</span></h4>
+              <ul class="contrast-list">
+                <li><span class="label">Usage Pattern:</span> <span>Users repeatedly complete useful tasks</span></li>
+                <li><span class="label">Output Utility:</span> <span>Music AI songs published and reused</span></li>
+                <li><span class="label">Compute Cost:</span> <span>Resource-efficient, sustainable operations</span></li>
+                <li><span class="label">10-Yr Funding:</span> <span><strong>Compounding</strong> utility and recurring revenue</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="pipeline-flow">
+            <div class="pipe-node" style="--c:var(--attention)">
+              <span class="pipe-num" style="color:var(--attention)">Layer 1</span>
+              <div class="pipe-name">Attention</div>
+              <div class="pipe-examples">What impact did we attract? Viral reach, influential viewers, meaningful discussions, expert interest, and shared ideas.</div>
+            </div>
+            <div class="pipe-node" style="--c:var(--consumption)">
+              <span class="pipe-num" style="color:var(--consumption)">Layer 2</span>
+              <div class="pipe-name">Consumption</div>
+              <div class="pipe-examples">What did people actually do? Videos watched, watch time, returning viewers, website visits, and Music AI application usage.</div>
+            </div>
+            <div class="pipe-node" style="--c:var(--cashflow)">
+              <span class="pipe-num" style="color:var(--cashflow)">Layer 3</span>
+              <div class="pipe-name">Cash Flow</div>
+              <div class="pipe-examples">What value was generated? YouTube ad revenue, paid product usage, transaction fees, sponsorships, and related services.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: The Seven Rules for Measuring High-Quality Consumption -->
+        <div class="story-step">
+          <div class="story-marker" style="border-color:var(--consumption);color:var(--consumption)">02</div>
+          <span class="story-tag" style="color:var(--consumption)">Evaluation Principles</span>
+          <h3 class="story-title">The Seven Rules for Measuring High-Quality Consumption</h3>
+          <p class="story-desc">Consumption should not be measured only by counting raw views, users, or operations. These seven principles help distinguish empty activity from consumption that creates meaningful and lasting value.</p>
+          
+          <div class="metrics-grid-7">
+            <div class="metric-box">
+              <b>1. Actual Utility</b>
+              <p>Provides genuine value or fulfills a real need.</p>
+              <span class="metric-ex" style="color:var(--consumption)">Developers completing real tasks</span>
+            </div>
+            <div class="metric-box">
+              <b>2. Outcomes over Activity</b>
+              <p>What consumption produces rather than raw volume.</p>
+              <span class="metric-ex" style="color:var(--consumption)">Songs published, heard, or reused</span>
+            </div>
+            <div class="metric-box">
+              <b>3. Meaningful Engagement</b>
+              <p>Genuine deep interaction with the service.</p>
+              <span class="metric-ex" style="color:var(--consumption)">Creating and refining a song in Music AI</span>
+            </div>
+            <div class="metric-box">
+              <b>4. Persistence</b>
+              <p>Whether consumption endures over years.</p>
+              <span class="metric-ex" style="color:var(--consumption)">Users returning regularly for 10 years</span>
+            </div>
+            <div class="metric-box">
+              <b>5. Genuine Demand</b>
+              <p>Real user intent versus artificial inflation.</p>
+              <span class="metric-ex" style="color:var(--consumption)">Real swaps vs. wash volume</span>
+            </div>
+            <div class="metric-box">
+              <b>6. Downstream Impact</b>
+              <p>Whether usage enables further creative acts.</p>
+              <span class="metric-ex" style="color:var(--consumption)">Inspiring code, research, or apps</span>
+            </div>
+            <div class="metric-box span-full">
+              <b>7. Resource Efficiency</b>
+              <p>How much useful value is produced relative to the computing resources consumed.</p>
+              <span class="metric-ex" style="color:var(--consumption)">AI applications completing tasks at sustainable operating & GPU costs</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: 10-Year Simulation (Product A vs Product B) -->
+        <div class="story-step">
+          <div class="story-marker" style="border-color:var(--consumption);color:var(--consumption)">03</div>
+          <span class="story-tag" style="color:var(--consumption)">10-Year Trajectory</span>
+          <h3 class="story-title">Comparing Trajectories: Compute-Burn Churn vs. High-Utility Retention</h3>
+          <p class="story-desc">Product A experiences a short-lived explosion in signups that burns capital. Product B builds steady cohort retention, generating compounding software output and protocol utility over a 10-year period.</p>
+
+          <div class="sim-controls">
+            <span>Inspect Milestone:</span>
+            <button type="button" class="sim-btn-cons active" data-sim-cons="0">Month 1</button>
+            <button type="button" class="sim-btn-cons" data-sim-cons="1">Year 1</button>
+            <button type="button" class="sim-btn-cons" data-sim-cons="2">Year 5</button>
+            <button type="button" class="sim-btn-cons" data-sim-cons="3">Year 10</button>
+          </div>
+
+          <div class="sim-chart-wrap">
+            <svg viewBox="0 0 640 220" role="img" aria-label="10-Year Comparison: Product A vs Product B">
+              <!-- Grid Lines -->
+              <line x1="50" y1="30" x2="610" y2="30" stroke="var(--line)" stroke-dasharray="4 4" />
+              <line x1="50" y1="70" x2="610" y2="70" stroke="var(--line)" stroke-dasharray="4 4" />
+              <line x1="50" y1="110" x2="610" y2="110" stroke="var(--line)" stroke-dasharray="4 4" />
+              <line x1="50" y1="150" x2="610" y2="150" stroke="var(--line)" stroke-dasharray="4 4" />
+              <line x1="50" y1="190" x2="610" y2="190" stroke="var(--line)" />
+
+              <!-- Time Labels -->
+              <text x="60" y="208" font-size="11" fill="var(--muted)" font-family="var(--body)" text-anchor="middle">M1</text>
+              <text x="140" y="208" font-size="11" fill="var(--muted)" font-family="var(--body)" text-anchor="middle">M6</text>
+              <text x="220" y="208" font-size="11" fill="var(--muted)" font-family="var(--body)" text-anchor="middle">Y1</text>
+              <text x="320" y="208" font-size="11" fill="var(--muted)" font-family="var(--body)" text-anchor="middle">Y3</text>
+              <text x="420" y="208" font-size="11" fill="var(--muted)" font-family="var(--body)" text-anchor="middle">Y5</text>
+              <text x="520" y="208" font-size="11" fill="var(--muted)" font-family="var(--body)" text-anchor="middle">Y8</text>
+              <text x="610" y="208" font-size="11" fill="var(--muted)" font-family="var(--body)" text-anchor="middle">Y10</text>
+
+              <!-- Product A: Churn (Spike then collapse) -->
+              <polyline points="60,30 100,115 140,170 180,188 220,190 320,190 420,190 520,190 610,190" fill="none" stroke="#E05252" stroke-width="2.5" stroke-dasharray="6 4" stroke-linecap="round" />
+
+              <!-- Product B: Compounding Utility -->
+              <polyline points="60,180 140,172 220,158 320,132 420,95 520,60 610,26" fill="none" stroke="var(--consumption)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round" />
+
+              <!-- Dynamic Indicator Line -->
+              <line id="sim-cons-indicator" x1="60" y1="20" x2="60" y2="190" stroke="var(--ink)" stroke-width="2" stroke-dasharray="4 3" opacity=".8" />
+              <circle id="sim-cons-point-a" cx="60" cy="30" r="5" fill="#E05252" />
+              <circle id="sim-cons-point-b" cx="60" cy="180" r="5" fill="var(--consumption)" />
+            </svg>
+
+            <div class="sim-legend">
+              <span><i class="meme"></i>Product A (100K Users: High compute burn, rapid churn)</span>
+              <span><i style="border-top:3px solid var(--consumption)"></i>Product B (1K Users: Compounding utility & output retention)</span>
+            </div>
+
+            <div class="sim-status">
+              <div class="sim-status-col meme">
+                <b id="sim-cons-a-title">Product A (Low Retention) · Month 1</b>
+                <p id="sim-cons-a-desc">100,000 signups · Massive GPU server bill · 95% one-and-done dropoff · Zero outputs reused.</p>
+              </div>
+              <div class="sim-status-col" style="--c:var(--consumption)">
+                <b id="sim-cons-b-title" style="color:var(--consumption)">Product B (High Utility) · Month 1</b>
+                <p id="sim-cons-b-desc">1,000 active users · Low $120 operating cost · 240 songs created and published using Music AI.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4: 10-Year Framework (Two Independent Levels) -->
+        <div class="story-step">
+          <div class="story-marker" style="border-color:var(--consumption);color:var(--consumption)">04</div>
+          <span class="story-tag" style="color:var(--consumption)">Accounting Architecture</span>
+          <h3 class="story-title">Measuring Over 10 Years: Two Independent Levels</h3>
+          <p class="story-desc">Separating consumption volume from the value it creates prevents double-counting and distinguishes pure server load from genuine economic productivity.</p>
+
+          <div class="levels-grid">
+            <div class="level-card">
+              <h4>Level A: Consumption Generated</h4>
+              <p>Measures raw usage volume, frequency, and retention:</p>
+              <ul>
+                <li>Total content watched or listened to</li>
+                <li>Successful tasks completed by applications</li>
+                <li>AI-generated outputs created & used</li>
+                <li>Successful blockchain transactions & active users</li>
+                <li>Cohort retention and consumption growth over time</li>
+              </ul>
+            </div>
+            <div class="level-card">
+              <h4>Level B: Value Created by Consumption</h4>
+              <p>Measures concrete downstream outputs and economic impact:</p>
+              <ul>
+                <li>Music created & published with Music AI</li>
+                <li>Software & digital tools built and deployed</li>
+                <li>Research and useful outputs from educational content</li>
+                <li>Meaningful payments & swaps fulfilling actual user needs</li>
+                <li>Dev cost coverage ratio and revenue from paid services</li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="score-banner" style="border-color:var(--consumption);background:rgba(75,82,214,.08)">
+            <b>Predictive Consumption Intelligence:</b> Tracking these levels separately over 10 years allows historical data to reveal which consumption indicators best predict long-term user retention, output utility, and self-funding revenue generation.
+          </div>
+        </div>
+
+        <!-- STEP 5: Critical Reality & The Closed Flywheel -->
+        <div class="story-step">
+          <div class="story-marker" style="border-color:var(--consumption);color:var(--consumption)">05</div>
+          <span class="story-tag" style="color:var(--consumption)">The Closed Loop</span>
+          <h3 class="story-title">Consumption vs. Compute Cost: The Self-Funding Flywheel</h3>
+          <p class="story-desc">Consumption does not automatically generate revenue. People can watch millions of videos or process millions of transactions without the project earning sustainable funding. The system must capture genuine protocol fees that exceed operating costs.</p>
+
+          <div class="flywheel-container">
+            <div class="flywheel-svg-wrap">
+              <svg viewBox="0 0 380 380" role="img" aria-label="Consumption Flywheel Loop">
+                <!-- Orbit Ring -->
+                <circle cx="190" cy="190" r="125" fill="none" stroke="var(--line)" stroke-width="2.5" />
+                <circle cx="190" cy="190" r="125" fill="none" stroke="var(--consumption)" stroke-width="3" stroke-dasharray="14 10" class="rotating-ring" />
+
+                <!-- Center Hub -->
+                <circle cx="190" cy="190" r="48" fill="var(--surface)" stroke="var(--consumption)" stroke-width="2" />
+                <text x="190" y="184" text-anchor="middle" font-size="11" font-weight="700" fill="var(--muted)" font-family="var(--head)">10-YEAR</text>
+                <text x="190" y="202" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)" font-family="var(--head)">CONSUMPTION</text>
+
+                <!-- Node 1: Attention (Top) -->
+                <circle cx="190" cy="65" r="28" fill="var(--surface)" stroke="var(--attention)" stroke-width="2.5" />
+                <text x="190" y="69" text-anchor="middle" font-size="10.5" font-weight="700" fill="var(--ink)" font-family="var(--head)">ATTENTION</text>
+
+                <!-- Node 2: Consumption (Top Right) -->
+                <circle cx="309" cy="151" r="28" fill="var(--surface)" stroke="var(--consumption)" stroke-width="2.5" />
+                <text x="309" y="155" text-anchor="middle" font-size="10" font-weight="700" fill="var(--ink)" font-family="var(--head)">CONSUMPTION</text>
+
+                <!-- Node 3: Economic Activity (Bottom Right) -->
+                <circle cx="264" cy="291" r="28" fill="var(--surface)" stroke="var(--cashflow)" stroke-width="2.5" />
+                <text x="264" y="287" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)" font-family="var(--head)">ECONOMIC</text>
+                <text x="264" y="299" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)" font-family="var(--head)">ACTIVITY</text>
+
+                <!-- Node 4: Revenue Received (Bottom Left) -->
+                <circle cx="116" cy="291" r="28" fill="var(--surface)" stroke="var(--attention)" stroke-width="2.5" />
+                <text x="116" y="287" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)" font-family="var(--head)">REVENUE</text>
+                <text x="116" y="299" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)" font-family="var(--head)">RECEIVED</text>
+
+                <!-- Node 5: Reinvestment (Top Left) -->
+                <circle cx="71" cy="151" r="28" fill="var(--surface)" stroke="var(--consumption)" stroke-width="2.5" />
+                <text x="71" y="155" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)" font-family="var(--head)">REINVESTMENT</text>
+              </svg>
+            </div>
+
+            <div class="token-distinction">
+              <div class="dist-box leak">
+                <b>Unfunded Compute Drain (Negative Loop)</b>
+                <p>An application processes thousands of free-tier AI queries or wash swaps. Computing bills exceed earnings, producing net capital drain instead of sustainability.</p>
+              </div>
+              <div class="dist-box" style="border-left:4px solid var(--consumption)">
+                <b style="color:var(--consumption)">Sustainable Fee Capture (Self-Funding Flywheel)</b>
+                <p>High-utility tasks, paid product subscriptions, and blockchain swap fees create real protocol cash flow. This revenue directly funds continued operation, infrastructure, and builder bounties.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flywheel-conclusion">
+            <strong>Conclusion:</strong> High-quality consumption must account for utility, outcomes, persistence, genuine demand, downstream impact, and resource efficiency. Over a 10-year period, this model ensures that digital consumption does not just generate activity, but creates enough real economic value to <strong>fund the system's continued operation and growth</strong>.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+  </section>
+
+  <section class="panel" role="tabpanel" id="p-cashflow" aria-labelledby="t-cashflow" style="--c:var(--cashflow)">
+    <div class="section-intro">
+      <span class="section-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><ellipse cx="12" cy="5" rx="7" ry="3"/><path d="M5 5v6c0 1.7 3.1 3 7 3s7-1.3 7-3V5"/><path d="M5 11v6c0 1.7 3.1 3 7 3s7-1.3 7-3v-6"/></svg>
+      </span>
+      <div>
+        <h2>Cashflow</h2>
+        <p class="lead">Cashflow has to grow on average.</p>
+      </div>
+    </div>
+
+    <!-- Cashflow Simulator -->
+    <div class="sim-chart-wrap" id="sim-cashflow" style="margin-bottom: 24px;">
+      <div class="sim-controls">
+        <span>Cashflow Repeatability Simulator</span>
+        <button class="sim-btn active" id="simulate-cashflow-btn" type="button">Generate Random Inputs</button>
+      </div>
+      <div style="font-size: 13px; color: var(--muted); line-height: 1.55; margin-bottom: 12px;">
+        <b style="color: var(--ink);">How to read this:</b><br>
+        <span style="color: var(--denom); font-weight: 600;">Total Revenue</span> = all operating revenue in the period (subscriptions + fees + sales + grants).<br>
+        <span style="color: var(--attention); font-weight: 600;">High-Value / Recurring (3 pts)</span> = subscriptions, API/AI usage fees, interchain swap fees.<br>
+        <span style="color: var(--consumption); font-weight: 600;">Medium-Value / Semi-Recurring (1 pt)</span> = licensing, marketplace commissions, developer tools.<br>
+        <span style="color: var(--cashflow); font-weight: 600;">Low-Value / One-time or Volatile (0.1 pts)</span> = advertising, one-time sales, grants/sponsorships.<br>
+        Repeatability + immunity to competition come from a high share of recurring revenue (score near 3.0).
+        <div class="sim-formula sim-formula-cash">Cashflow Score = ((Recurring * 3) + (Semi-Recurring * 1) + (One-time * 0.1)) / Total Revenue</div>
+      </div>
+      <div id="cashflow-sim-output" style="font-family: monospace; font-size: 13.5px; color: var(--ink); line-height: 1.6;">
+        <p style="color: var(--muted); margin: 0;">Click "Generate Random Inputs" to run the simulation.</p>
+      </div>
+    </div>
+    <div class="chart-head"><span>Average trend</span><strong data-slope="2"></strong></div>
+    <svg class="chart" data-chart="2" viewBox="0 0 640 250" role="img" aria-label="Cashflow growing over 24 months"></svg>
+    <div class="legend"><span><i></i>Cashflow</span><span><i class="d"></i>Average trend</span><span>Illustrative data</span></div>
+
+    <!-- CASE STUDY: CASHFLOW MODEL (CONNECTED VERTICAL STORYBOARD) -->
+    <div class="storyboard-section" id="case-study-cashflow" style="--c:var(--cashflow)">
+      <div class="storyboard-head">
+        <span class="badge" style="background:rgba(194,106,10,.14);color:var(--cashflow)">Case Study · Cashflow Model</span>
+        <h2>YouTube as a Model for Cashflow in an Attention-Driven Economy</h2>
+        <p>Why generating money once is not the same as building a sustainable cashflow system. A walkthrough of measuring recurrence, net cash surplus, unit economics, and 10-year internal reinvestment.</p>
+      </div>
+
+      <div class="story-track" style="border-left-color:var(--line)">
+
+        <!-- STEP 1: The Cashflow Paradox & 3 Layers -->
+        <div class="story-step" style="--step-c:var(--cashflow)">
+          <div class="story-marker" style="border-color:var(--cashflow);color:var(--cashflow)">01</div>
+          <span class="story-tag" style="color:var(--cashflow)">Cashflow Paradox & The 3 Layers</span>
+          <h3 class="story-title">Windfalls Do Not Mean Sustainability: $100,000 Upfront vs. $8,000/mo Recurring Surplus</h3>
+          <p class="story-desc">Generating money once is fundamentally different from building a repeatable cashflow engine. A channel or crypto project can receive a $100,000 windfall sponsorship or grant, but with $20,000/month in operating burn, runway hits zero in 5 months. Meanwhile, a project generating $8,000/month from paying customers with $5,000 expenses produces a compounding $3,000 monthly cash surplus that sustains itself indefinitely.</p>
+          
+          <div class="contrast-grid">
+            <div class="contrast-card meme">
+              <h4><span>Project A: One-Time Income</span> <span class="stat-pill">$100,000 Upfront</span></h4>
+              <ul class="contrast-list">
+                <li><span class="label">Income Model:</span> <span>Lump-sum sponsorship or grant</span></li>
+                <li><span class="label">Operating Burn:</span> <span>$20,000 / month</span></li>
+                <li><span class="label">Net Cashflow:</span> <span>-$20,000 / month (negative loop)</span></li>
+                <li><span class="label">10-Yr Sustainability:</span> <span><strong>Runs out in 5 months</strong>; $0 recurring cashflow</span></li>
+              </ul>
+            </div>
+            <div class="contrast-card" style="border-top:3.5px solid var(--cashflow)">
+              <h4><span>Project B: Recurring Income</span> <span class="stat-pill" style="background:rgba(194,106,10,.14);color:var(--cashflow)">$8,000/mo Recurring</span></h4>
+              <ul class="contrast-list">
+                <li><span class="label">Income Model:</span> <span>Subscriptions & usage-based fees</span></li>
+                <li><span class="label">Operating Burn:</span> <span>$5,000 / month</span></li>
+                <li><span class="label">Net Cashflow:</span> <span><strong>+$3,000 / month operating surplus</strong></span></li>
+                <li><span class="label">10-Yr Sustainability:</span> <span><strong>Compounding surplus</strong>; self-funds continuous R&D</span></li>
+              </ul>
+            </div>
+          </div>
+
+          <div class="pipeline-flow">
+            <div class="pipe-node" style="--c:var(--attention)">
+              <span class="pipe-num" style="color:var(--attention)">Layer 1</span>
+              <div class="pipe-name">Attention</div>
+              <div class="pipe-examples">What did we attract? Reach, quality, relevance, watch time, and lasting interest from developers, researchers, and users.</div>
+            </div>
+            <div class="pipe-node" style="--c:var(--consumption)">
+              <span class="pipe-num" style="color:var(--consumption)">Layer 2</span>
+              <div class="pipe-name">Consumption</div>
+              <div class="pipe-examples">What did people do? Videos watched, returning viewers, website visits, Music AI creations, and blockchain transactions.</div>
+            </div>
+            <div class="pipe-node" style="--c:var(--cashflow)">
+              <span class="pipe-num" style="color:var(--cashflow)">Layer 3</span>
+              <div class="pipe-name">Cashflow</div>
+              <div class="pipe-examples">What economic value was generated? Advertising revenue, subscriptions, product sales, usage fees, and swap transaction fees.</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 2: The 9 Types of Digital Cashflow & Predictability Spectrum -->
+        <div class="story-step">
+          <div class="story-marker" style="border-color:var(--cashflow);color:var(--cashflow)">02</div>
+          <span class="story-tag" style="color:var(--cashflow)">Revenue Taxonomy & Predictability</span>
+          <h3 class="story-title">The 9 Types of Digital Cashflow & The Predictability Spectrum</h3>
+          <p class="story-desc">Cash sources differ fundamentally in their predictability. Recurring subscriptions, usage fees, and enterprise contracts provide stable revenue to budget operations, whereas advertising, sponsorships, and grants fluctuate or end unexpectedly.</p>
+          
+          <div class="metrics-grid-9">
+            <div class="metric-box">
+              <b>1. Advertising Revenue</b>
+              <p>YouTube monetization, website advertisements.</p>
+              <span class="metric-ex" style="color:var(--cashflow)">Monthly ad income, CPM rates</span>
+            </div>
+            <div class="metric-box">
+              <b>2. Subscriptions</b>
+              <p>Premium AI tools, music libraries, SaaS platforms.</p>
+              <span class="metric-ex" style="color:var(--cashflow)">MRR, subscriber retention</span>
+            </div>
+            <div class="metric-box">
+              <b>3. Usage-Based Payments</b>
+              <p>AI music generation, API calls, video tasks.</p>
+              <span class="metric-ex" style="color:var(--cashflow)">Pay-per-task margin, compute recovery</span>
+            </div>
+            <div class="metric-box">
+              <b>4. Transaction Fees</b>
+              <p>Interblockchain swaps, blockchain payments.</p>
+              <span class="metric-ex" style="color:var(--cashflow)">Fees captured, net fee income</span>
+            </div>
+            <div class="metric-box">
+              <b>5. Digital Product Sales</b>
+              <p>Music tracks, software downloads, digital assets.</p>
+              <span class="metric-ex" style="color:var(--cashflow)">Direct sales, repeat purchases</span>
+            </div>
+            <div class="metric-box">
+              <b>6. Licensing & Royalties</b>
+              <p>Music licensing, software IP, digital content rights.</p>
+              <span class="metric-ex" style="color:var(--cashflow)">Royalties received, recurring IP income</span>
+            </div>
+            <div class="metric-box">
+              <b>7. Enterprise Services</b>
+              <p>Custom AI solutions, hosted nodes, infra contracts.</p>
+              <span class="metric-ex" style="color:var(--cashflow)">Contract revenue, client renewals</span>
+            </div>
+            <div class="metric-box">
+              <b>8. Sponsorships & Deals</b>
+              <p>Sponsored videos, branded integrations, collabs.</p>
+              <span class="metric-ex" style="color:var(--cashflow)">Cash received, contract renewals</span>
+            </div>
+            <div class="metric-box">
+              <b>9. Grants & Donations</b>
+              <p>Research grants, ecosystem funds, DAO grants.</p>
+              <span class="metric-ex" style="color:var(--cashflow)">Funds received, finite duration</span>
+            </div>
+          </div>
+
+          <div class="pred-spectrum">
+            <div class="pred-card">
+              <span class="pred-badge high">High Predictability</span>
+              <b>Subscriptions & Enterprise Contracts</b>
+              <p>Contractual, recurring monthly cashflows that enable predictable budgeting and hiring.</p>
+            </div>
+            <div class="pred-card">
+              <span class="pred-badge med">Moderate Predictability</span>
+              <b>Usage Fees, Royalties & Product Sales</b>
+              <p>Volume-correlated revenue with repeat behavior that tracks active economic utility.</p>
+            </div>
+            <div class="pred-card">
+              <span class="pred-badge low">Low / Volatile Predictability</span>
+              <b>Ad Revenue, Lump-Sum Sponsorships & Grants</b>
+              <p>Fluctuates with broader advertising cycles, algorithmic shifts, or finite fund programs.</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 3: 7 Rules for Measuring Sustainable Cashflow -->
+        <div class="story-step">
+          <div class="story-marker" style="border-color:var(--cashflow);color:var(--cashflow)">03</div>
+          <span class="story-tag" style="color:var(--cashflow)">Evaluation Principles</span>
+          <h3 class="story-title">The Seven Rules for Measuring Sustainable Cashflow Quality</h3>
+          <p class="story-desc">Cashflow should be evaluated by its quality, reliability, and net retention—not just top-line dollars. These seven principles help distinguish temporary spikes from an enduring self-funding business.</p>
+          
+          <div class="metrics-grid-7">
+            <div class="metric-box">
+              <b>1. Actual Cash Received</b>
+              <p>Whether real money has reached project accounts.</p>
+              <span class="metric-ex" style="color:var(--cashflow)">Fees received vs nominal volume</span>
+            </div>
+            <div class="metric-box">
+              <b>2. Recurrence</b>
+              <p>Whether income continues predictably over time.</p>
+              <span class="metric-ex" style="color:var(--cashflow)">Monthly subscriptions vs one-off checks</span>
+            </div>
+            <div class="metric-box">
+              <b>3. Net Cash Generation</b>
+              <p>How much cash remains after expenses and hosting.</p>
+              <span class="metric-ex" style="color:var(--cashflow)">Operating revenue exceeding costs</span>
+            </div>
+            <div class="metric-box">
+              <b>4. Revenue Diversification</b>
+              <p>Dependence on different income sources.</p>
+              <span class="metric-ex" style="color:var(--cashflow)">Ad rev + subs + swap fees</span>
+            </div>
+            <div class="metric-box">
+              <b>5. Resilience</b>
+              <p>Ability to withstand declining demand or traffic.</p>
+              <span class="metric-ex" style="color:var(--cashflow)">Covering costs during view dips</span>
+            </div>
+            <div class="metric-box">
+              <b>6. Unit Economics</b>
+              <p>Each service contributes positively after its direct cost.</p>
+              <span class="metric-ex" style="color:var(--cashflow)">AI music rev exceeding GPU compute</span>
+            </div>
+            <div class="metric-box span-full">
+              <b>7. Reinvestment Capacity</b>
+              <p>Ability to fund further R&D and feature expansion completely internally using operating surplus rather than needing new funding rounds.</p>
+              <span class="metric-ex" style="color:var(--cashflow)">Internal operating surplus funding protocol engineers & infrastructure</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 4: 10-Year Trajectory Simulation & Self-Funding Ratio -->
+        <div class="story-step">
+          <div class="story-marker" style="border-color:var(--cashflow);color:var(--cashflow)">04</div>
+          <span class="story-tag" style="color:var(--cashflow)">10-Year Dynamic Simulation</span>
+          <h3 class="story-title">10-Year Net Cash Reserves: Project A (Burnout) vs. Project B (Compounding Surplus)</h3>
+          <p class="story-desc">Simulating a 10-year operating horizon: Project A burns through its $100,000 windfall in 5 months and flatlines into dependency, whereas Project B reinvests its $3,000 monthly surplus with positive unit economics into compounding self-funding independence.</p>
+          
+          <div class="sim-controls">
+            <span>Select Horizon Milestone:</span>
+            <button class="sim-btn-cash active" data-cons-idx="0">Month 1</button>
+            <button class="sim-btn-cash" data-cons-idx="1">Year 1</button>
+            <button class="sim-btn-cash" data-cons-idx="2">Year 5</button>
+            <button class="sim-btn-cash" data-cons-idx="3">Year 10</button>
+          </div>
+
+          <div class="sim-chart-wrap">
+            <svg viewBox="0 0 640 220" role="img" aria-label="10-Year Simulation comparing one-time windfall vs compounding cashflow">
+              <!-- Grid lines -->
+              <line x1="50" y1="30" x2="620" y2="30" stroke="var(--line)" stroke-dasharray="3 3"/>
+              <line x1="50" y1="80" x2="620" y2="80" stroke="var(--line)" stroke-dasharray="3 3"/>
+              <line x1="50" y1="130" x2="620" y2="130" stroke="var(--line)" stroke-dasharray="3 3"/>
+              <line x1="50" y1="190" x2="620" y2="190" stroke="var(--line)"/>
+              
+              <!-- Y-Axis Labels -->
+              <text x="44" y="34" text-anchor="end" font-size="11" fill="var(--muted)">+$80k</text>
+              <text x="44" y="84" text-anchor="end" font-size="11" fill="var(--muted)">+$35k</text>
+              <text x="44" y="134" text-anchor="end" font-size="11" fill="var(--muted)">+$10k</text>
+              <text x="44" y="194" text-anchor="end" font-size="11" fill="var(--muted)">$0/Runway</text>
+
+              <!-- X-Axis Labels -->
+              <text x="60" y="210" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--muted)">Month 1</text>
+              <text x="220" y="210" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--muted)">Year 1</text>
+              <text x="420" y="210" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--muted)">Year 5</text>
+              <text x="610" y="210" text-anchor="middle" font-size="11.5" font-weight="600" fill="var(--muted)">Year 10</text>
+
+              <!-- Project A: Rapid burnout from $100k to 0 at Month 5 -->
+              <path d="M 60,50 C 90,60 120,190 160,190 L 610,190" fill="none" stroke="#E05252" stroke-width="2.5" stroke-dasharray="6 5"/>
+              
+              <!-- Project B: Compounding cash surplus -->
+              <path d="M 60,175 C 140,165 220,145 320,115 C 420,90 520,55 610,28" fill="none" stroke="var(--cashflow)" stroke-width="3.5" stroke-linecap="round"/>
+              <polygon points="60,175 140,165 220,145 320,115 420,90 520,55 610,28 610,190 60,190" fill="var(--cashflow)" opacity=".12"/>
+
+              <!-- Active Timeline Indicator -->
+              <line id="sim-cash-indicator" x1="60" y1="20" x2="60" y2="190" stroke="var(--ink)" stroke-width="1.5" stroke-dasharray="3 3" opacity=".7"/>
+              <circle id="sim-cash-point-a" cx="60" cy="50" r="5.5" fill="#E05252" stroke="var(--surface)" stroke-width="2"/>
+              <circle id="sim-cash-point-b" cx="60" cy="175" r="5.5" fill="var(--cashflow)" stroke="var(--surface)" stroke-width="2"/>
+            </svg>
+
+            <div class="sim-legend">
+              <span><i class="meme"></i>Project A (One-Time Windfall · Burnout)</span>
+              <span><i style="border-top:3px solid var(--cashflow)"></i>Project B (Recurring Utility · Compounding Surplus)</span>
+            </div>
+
+            <div class="sim-status">
+              <div class="sim-status-col meme">
+                <b id="sim-cash-a-title">Project A (One-Time Windfall) · Month 1</b>
+                <p id="sim-cash-a-desc">$100,000 upfront sponsorship · $20,000/mo burn rate · 5 months of operating runway remaining.</p>
+              </div>
+              <div class="sim-status-col" style="--c:var(--cashflow)">
+                <b id="sim-cash-b-title" style="color:var(--cashflow)">Project B (Recurring Utility) · Month 1</b>
+                <p id="sim-cash-b-desc">$8,000/mo revenue · $5,000/mo expenses · +$3,000 monthly operating cash surplus (160% self-funding ratio).</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="ratio-box">
+            <div class="ratio-header">
+              <span class="ratio-badge">Key Sustainability Metric</span>
+              <strong>The Self-Funding Ratio</strong>
+            </div>
+            <div class="ratio-formula">
+              Self-Funding Ratio = (Operating Cash Generated / Operating Cash Expenses) × 100
+            </div>
+            <p class="ratio-desc">
+              <strong>Example:</strong> If a project generates $12,000 in monthly operating cash while spending $10,000 on operating expenses, its Self-Funding Ratio is <strong>120%</strong>. A ratio &gt; 100% demonstrates that internally generated cash covers operational overhead, creating surplus for internal reinvestment without dilution.
+            </p>
+          </div>
+
+          <div class="cash-dashboard-wrap">
+            <div class="dash-title">10-Year Cashflow Dashboard: 7 Core Health Dimensions</div>
+            <div class="dash-grid">
+              <div class="dash-item">
+                <span class="d-num">Metric 01</span>
+                <b>Annual Inflows vs. Outflows</b>
+                <p>Tracking gross cash received against gross expenditures to ensure positive compounding cash position over 10 years.</p>
+              </div>
+              <div class="dash-item">
+                <span class="d-num">Metric 02</span>
+                <b>Net Operating Cashflow</b>
+                <p>Operational cash remaining after direct hosting, node operations, and ongoing maintenance obligations are satisfied.</p>
+              </div>
+              <div class="dash-item">
+                <span class="d-num">Metric 03</span>
+                <b>Proportion of Recurring Revenue</b>
+                <p>Percentage of inflows originating from predictable subscriptions and enterprise retainer contracts vs. volatile one-offs.</p>
+              </div>
+              <div class="dash-item">
+                <span class="d-num">Metric 04</span>
+                <b>Revenue Diversification & Retention</b>
+                <p>Mitigating counterparty risk across ads, SaaS subscriptions, swap transaction fees, and IP licensing.</p>
+              </div>
+              <div class="dash-item">
+                <span class="d-num">Metric 05</span>
+                <b>Cash Reserves & Operating Runway</b>
+                <p>Total liquid non-volatile treasury reserves measured in months of zero-revenue operating survival.</p>
+              </div>
+              <div class="dash-item">
+                <span class="d-num">Metric 06</span>
+                <b>% OpEx Covered Internally</b>
+                <p>Proportion of continuous operational overhead paid purely from self-generated platform fees.</p>
+              </div>
+              <div class="dash-item span-full">
+                <span class="d-num">Metric 07</span>
+                <b>Cash Available for Internal Reinvestment</b>
+                <p>Net operating surplus deployed directly into protocol development, developer bounties, and ecosystem expansion without outside capital or token dilution.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- STEP 5: Blockchain Cashflow Realities & The Closed Self-Funding Flywheel -->
+        <div class="story-step">
+          <div class="story-marker" style="border-color:var(--cashflow);color:var(--cashflow)">05</div>
+          <span class="story-tag" style="color:var(--cashflow)">Blockchain Realities & The Closed Loop</span>
+          <h3 class="story-title">Distinguishing Blockchain Noise from Real Cashflow: The Self-Funding Flywheel</h3>
+          <p class="story-desc">In cryptocurrency systems, token prices, trading volumes, and treasury reserves are frequently confused with real cashflow. Over a 10-year horizon, vanity volume must be disentangled from sustainable economic self-funding.</p>
+          
+          <div class="crypto-realities-grid">
+            <div class="crypto-card false">
+              <b><span>Token Price ≠ Revenue</span> <span class="c-tag">Not Cashflow</span></b>
+              <p>A 10x rise in token price does not fund hosting bills or developer salaries unless tokens are dumped onto the market.</p>
+            </div>
+            <div class="crypto-card false">
+              <b><span>Trading Volume ≠ Revenue</span> <span class="c-tag">Not Cashflow</span></b>
+              <p>$1,000,000 in decentralized trading volume is not project revenue. Only the actual transaction fee cut captured by the protocol counts.</p>
+            </div>
+            <div class="crypto-card false">
+              <b><span>Token Sales ≠ Operating Rev</span> <span class="c-tag">Financing Inflow</span></b>
+              <p>Funds received from issuing or selling tokens represent external financing and equity dilution, not repeatable customer revenue.</p>
+            </div>
+            <div class="crypto-card true">
+              <b><span>Captured Fees = Operating Cash</span> <span class="c-tag">Real Cashflow</span></b>
+              <p>Transaction fees paid by actual users to complete real swaps, API tasks, and data storage represent legitimate, recurring operating income.</p>
+            </div>
+            <div class="crypto-card false span-full">
+              <b><span>Redemption Reserves ≠ Available Profit</span> <span class="c-tag">Obligation Reserve</span></b>
+              <p>Capital held to back redemption obligations, pool liquidity, or guarantees cannot be treated as profit or spent on speculative R&D.</p>
+            </div>
+          </div>
+
+          <div class="flywheel-container">
+            <div class="flywheel-svg-wrap">
+              <svg viewBox="0 0 380 380" role="img" aria-label="Closed-loop self-funding cashflow flywheel">
+                <circle cx="190" cy="190" r="140" fill="none" stroke="var(--line)" stroke-width="2" />
+                <circle cx="190" cy="190" r="140" fill="none" stroke="var(--cashflow)" stroke-width="3" stroke-dasharray="35 15" class="rotating-ring" />
+
+                <!-- Center Core -->
+                <circle cx="190" cy="190" r="66" fill="var(--surface)" stroke="var(--line)" stroke-width="1.5" />
+                <text x="190" y="174" text-anchor="middle" font-size="11" font-weight="700" fill="var(--cashflow)" font-family="var(--head)" letter-spacing="1">10-YEAR</text>
+                <text x="190" y="190" text-anchor="middle" font-size="12" font-weight="700" fill="var(--ink)" font-family="var(--head)">SELF-FUNDING</text>
+                <text x="190" y="206" text-anchor="middle" font-size="11" font-weight="700" fill="var(--muted)" font-family="var(--head)">CASHFLOW LOOP</text>
+
+                <!-- Node 1: Real Consumption (Top) -->
+                <circle cx="190" cy="50" r="28" fill="var(--surface)" stroke="var(--consumption)" stroke-width="2.5" />
+                <text x="190" y="47" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)" font-family="var(--head)">REAL</text>
+                <text x="190" y="59" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)" font-family="var(--head)">CONSUMPTION</text>
+
+                <!-- Node 2: Cash Received (Top Right) -->
+                <circle cx="309" cy="151" r="28" fill="var(--surface)" stroke="var(--cashflow)" stroke-width="2.5" />
+                <text x="309" y="147" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)" font-family="var(--head)">CASH</text>
+                <text x="309" y="159" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)" font-family="var(--head)">RECEIVED</text>
+
+                <!-- Node 3: Operating Costs (Bottom Right) -->
+                <circle cx="264" cy="291" r="28" fill="var(--surface)" stroke="#E05252" stroke-width="2.5" />
+                <text x="264" y="287" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)" font-family="var(--head)">OPERATING</text>
+                <text x="264" y="299" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)" font-family="var(--head)">COSTS</text>
+
+                <!-- Node 4: Net Cash Generated (Bottom Left) -->
+                <circle cx="116" cy="291" r="28" fill="var(--surface)" stroke="var(--attention)" stroke-width="2.5" />
+                <text x="116" y="287" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)" font-family="var(--head)">NET CASH</text>
+                <text x="116" y="299" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)" font-family="var(--head)">SURPLUS</text>
+
+                <!-- Node 5: Reinvestment (Top Left) -->
+                <circle cx="71" cy="151" r="28" fill="var(--surface)" stroke="var(--cashflow)" stroke-width="2.5" />
+                <text x="71" y="147" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)" font-family="var(--head)">INTERNAL</text>
+                <text x="71" y="159" text-anchor="middle" font-size="9.5" font-weight="700" fill="var(--ink)" font-family="var(--head)">REINVESTMENT</text>
+              </svg>
+            </div>
+
+            <div class="token-distinction">
+              <div class="dist-box leak">
+                <b>One-Time Grant Depletion (Negative Loop)</b>
+                <p>A project relies on one-time raises or sponsorships to fund operating payroll. When market cycles turn down, cash reserves hit zero and development collapses.</p>
+              </div>
+              <div class="dist-box" style="border-left:4px solid var(--cashflow)">
+                <b style="color:var(--cashflow)">Compounding Self-Funding Flywheel (Positive Loop)</b>
+                <p>Recurring subscriptions, API usage margins, and swap transaction fees produce positive net operating cashflow. This surplus funds internal R&D, infrastructure, and ecosystem expansion without reliance on external capital.</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="flywheel-conclusion" style="border-left:4px solid var(--cashflow)">
+            <strong style="color:var(--cashflow)">Conclusion:</strong> Sustainable cashflow is the ability to repeatedly generate sufficient cash to operate, fulfil obligations, maintain services, and fund further development. Over a 10-year period, the ultimate test is whether the system can <strong>generate, retain, and reinvest enough internally generated cash to sustain its operations and support continued growth without depending indefinitely on new external funding</strong>.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Floating Back to Top Button -->
+  <button class="back-to-top" id="back-to-top" type="button" aria-label="Go to top of page" title="Go to top">
+    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M18 15l-6-6-6 6"/>
+    </svg>
+    <span>Top</span>
+  </button>
+</main>
+
+<script>
+const ATTN=[
+["Viral Meme Attention","Dogecoin, viral memes, internet jokes, meme coins","Views, shares, mentions, meme creations"],
+["Intellectual Curiosity","Navier–Stokes equations, unsolved mathematical problems, scientific discoveries","Searches, video views, discussions"],
+["Search Attention","People searching for AI tools, tutorials, solutions to problems","Search volume, clicks, website visits"],
+["News and Current Events","Major technology announcements, political events, scientific breakthroughs","Article views, mentions, search spikes"],
+["Entertainment Attention","Music videos, comedy, movies, animated stories","Streams, watch time, repeat consumption"],
+["Creator and Influencer Attention","YouTubers, streamers, digital artists, online personalities","Followers, views, engagement, audience growth"],
+["Community Attention","Reddit communities, Discord servers, Telegram groups, online forums","Active members, discussions, returning users"],
+["Gaming Attention","Esports, gaming streams, game launches, player-created content","Viewership, players, downloads, in-game activity"],
+["Educational Attention","Courses, explainers, coding tutorials, language learning","Watch time, course enrollments, completed lessons"],
+["AI and Technology Attention","New AI models, AI-generated music, new applications, demonstrations","Product visits, API usage, downloads, generated outputs"],
+["Financial and Market Attention","Stock market trends, crypto tokens, trading narratives","Searches, watchlists, community activity, trading volume"],
+["Creative Participation","Art challenges, music remixes, fan fiction, collaborative projects","Submissions, remixes, creations, contributions"],
+["Product and Utility Attention","Wallets, productivity tools, software, useful websites","Sign-ups, active users, feature usage, transactions"],
+["Live Event Attention","Hackathons, conferences, livestreams, product launches","Live viewers, registrations, attendees, post-event engagement"],
+["Fandom and Cultural Attention","Sports teams, celebrities, fictional universes, popular franchises","Fan activity, merchandise demand, streams, community growth"],
+["Professional and Industry Attention","Developer tools, blockchain infrastructure, research papers, startup launches","GitHub stars, integrations, downloads, leads"]];
+
+document.getElementById('rows').innerHTML=ATTN.map((r,i)=>
+ `<div class="row"><div class="n"><span>${i+1}</span>${r[0]}</div><div><div class="k">Examples</div>${r[1]}</div><div><div class="k">How it's measured</div>${r[2]}</div></div>`).join('');
+
+// illustrative upward series: seeded noise on top of compounding growth
+function series(seed,g){let s=seed,v=[];const rnd=()=>(s=(s*16807)%2147483647)/2147483647;
+ for(let t=0;t<24;t++)v.push(100*Math.pow(1+g,t)*(1+(rnd()-.5)*.16));return v}
+const DATA=[series(7,.035),series(19,.03),series(31,.04)];
+const COL=['--attention','--consumption','--cashflow'];
+const css=n=>getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+
+function fit(v){const n=v.length,mx=(n-1)/2,my=v.reduce((a,b)=>a+b)/n;let c=0,d=0;
+ v.forEach((y,x)=>{c+=(x-mx)*(y-my);d+=(x-mx)**2});const m=c/d;return{m,b:my-m*mx,my}}
+
+function draw(i){
+ const svg=document.querySelector(`[data-chart="${i}"]`),v=DATA[i],W=640,H=250,L=44,R=12,T=14,B=28;
+ const col=css(COL[i]),grid=css('--line'),ink=css('--ink');
+ const lo=0,hi=Math.ceil(Math.max(...v)/50)*50;
+ const X=t=>L+t*(W-L-R)/(v.length-1),Y=y=>T+(1-(y-lo)/(hi-lo))*(H-T-B);
+ const f=fit(v);let h='';
+ for(let k=0;k<=4;k++){const y=lo+(hi-lo)*k/4;h+=`<line x1="${L}" x2="${W-R}" y1="${Y(y)}" y2="${Y(y)}" stroke="${grid}"/><text x="${L-8}" y="${Y(y)+4}" text-anchor="end">${Math.round(y)}</text>`}
+ [0,6,12,18,23].forEach(t=>h+=`<text x="${X(t)}" y="${H-8}" text-anchor="middle">M${t+1}</text>`);
+ const pts=v.map((y,t)=>`${X(t)},${Y(y)}`).join(' ');
+ h+=`<polygon points="${X(0)},${Y(0)} ${pts} ${X(23)},${Y(0)}" fill="${col}" opacity=".12"/>`;
+ h+=`<polyline points="${pts}" fill="none" stroke="${col}" stroke-width="3" stroke-linejoin="round" stroke-linecap="round"/>`;
+ h+=`<line x1="${X(0)}" y1="${Y(f.b)}" x2="${X(23)}" y2="${Y(f.b+f.m*23)}" stroke="${ink}" stroke-width="2" stroke-dasharray="6 5" opacity=".6"/>`;
+ svg.innerHTML=h;
+ document.querySelector(`[data-slope="${i}"]`).textContent=`+${(f.m/f.my*100).toFixed(1)}% per month`;
+}
+function spark(i){
+ const svg=document.querySelector(`[data-spark="${i}"]`),v=DATA[i],W=200,H=34,mn=Math.min(...v),mx=Math.max(...v);
+ svg.setAttribute('viewBox',`0 0 ${W} ${H}`);svg.setAttribute('preserveAspectRatio','none');
+ const p=v.map((y,t)=>`${t*W/23},${H-3-(y-mn)/(mx-mn)*(H-6)}`).join(' ');
+ svg.innerHTML=`<polyline points="${p}" fill="none" stroke="${css(COL[i])}" stroke-width="2.5" vector-effect="non-scaling-stroke" stroke-linejoin="round"/>`;
+}
+function render(){[0,1,2].forEach(i=>{draw(i);spark(i)})}
+render();
+
+const themeToggle=document.getElementById('theme-toggle');
+if(themeToggle){
+ themeToggle.addEventListener('click',()=>{
+  const isDark=document.documentElement.getAttribute('data-theme')==='dark';
+  const next=isDark?'light':'dark';
+  document.documentElement.setAttribute('data-theme',next);
+  try{localStorage.setItem('theme',next)}catch(e){}
+  render();
+ });
+}
+window.matchMedia('(prefers-color-scheme:dark)').addEventListener('change',e=>{
+ try{
+  if(!localStorage.getItem('theme')){
+   document.documentElement.setAttribute('data-theme',e.matches?'dark':'light');
+   render();
+  }
+ }catch(e){render()}
+});
+
+// tabs
+const tabs=[...document.querySelectorAll('.tab')];
+function select(t, scrollTargetId = null){
+  tabs.forEach(b=>{
+    const on=b===t;
+    b.setAttribute('aria-selected',on);
+    b.tabIndex=on?0:-1;
+  });
+  t.focus({ preventScroll: true });
+  const targetId = scrollTargetId || t.getAttribute('aria-controls');
+  if(targetId){
+    const el = document.getElementById(targetId);
+    if(el){
+      requestAnimationFrame(() => {
+        setTimeout(() => {
+          el.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 80);
+      });
+    }
+  }
+}
+
+// Direct Touch Hub navigation
+document.querySelectorAll('.touch-card').forEach(btn => {
+  btn.addEventListener('click', () => {
+    const targetTabId = btn.getAttribute('data-target-tab');
+    const targetScrollId = btn.getAttribute('data-target-scroll');
+    const tabEl = document.getElementById(targetTabId);
+    if(tabEl){
+      select(tabEl, targetScrollId);
+    }
+  });
+});
+
+// Floating Go to Top button
+const backToTopBtn = document.getElementById('back-to-top');
+if(backToTopBtn){
+  window.addEventListener('scroll', () => {
+    if(window.scrollY > 280){
+      backToTopBtn.classList.add('visible');
+    } else {
+      backToTopBtn.classList.remove('visible');
+    }
+  }, { passive: true });
+
+  backToTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  });
+}
+tabs.forEach((b,i)=>{b.onclick=()=>select(b);
+ b.onkeydown=e=>{if(e.key==='ArrowRight')select(tabs[(i+1)%3]);if(e.key==='ArrowLeft')select(tabs[(i+2)%3])}});
+
+// 10-Year Simulation controls
+const simData = [
+  {
+    x: 60,
+    memeY: 30,
+    scienceY: 182,
+    memeTitle: 'Video A (Meme) · Month 1',
+    memeDesc: '1,000,000 views · $140 quick ad revenue · 0 code commits · 0 developer inquiries. Attention peaks immediately.',
+    scienceTitle: 'Video B (Science) · Month 1',
+    scienceDesc: '5,000 views · $1 ad revenue · 2 academic researchers reach out · Initial seed of high-agency attention planted.'
+  },
+  {
+    x: 220,
+    memeY: 190,
+    scienceY: 165,
+    memeTitle: 'Video A (Meme) · Year 1',
+    memeDesc: '0 new views · Topic dead · 0 returning viewers · $0 sustained revenue. Meme is forgotten.',
+    scienceTitle: 'Video B (Science) · Year 1',
+    scienceDesc: '18,000 views · 4 GitHub pull requests merged · Music AI prototype initiated · Growing developer interest.'
+  },
+  {
+    x: 420,
+    memeY: 190,
+    scienceY: 105,
+    memeTitle: 'Video A (Meme) · Year 5',
+    memeDesc: 'Zero presence · $0 protocol cash flow · No products ever launched from this attention.',
+    scienceTitle: 'Video B (Science) · Year 5',
+    scienceDesc: '45,000 views · 3 decentralized applications live · $24,000/yr in recurring swap and network transaction fees.'
+  },
+  {
+    x: 610,
+    memeY: 190,
+    scienceY: 32,
+    memeTitle: 'Video A (Meme) · Year 10',
+    memeDesc: 'Cumulative 10-year economic contribution to project: $0. A total vanity dead-end.',
+    scienceTitle: 'Video B (Science) · Year 10',
+    scienceDesc: 'Self-funding equilibrium reached · Ecosystem activity pays 100% of ongoing R&D, hosting, and builder bounties.'
+  }
+];
+
+const simButtons = document.querySelectorAll('.sim-btn[data-sim]');
+const simIndicator = document.getElementById('sim-indicator');
+const simPointMeme = document.getElementById('sim-point-meme');
+const simPointScience = document.getElementById('sim-point-science');
+const simMemeTitle = document.getElementById('sim-meme-title');
+const simMemeDesc = document.getElementById('sim-meme-desc');
+const simScienceTitle = document.getElementById('sim-science-title');
+const simScienceDesc = document.getElementById('sim-science-desc');
+
+simButtons.forEach((btn, idx) => {
+  btn.addEventListener('click', () => {
+    simButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const d = simData[idx];
+    if (simIndicator) {
+      simIndicator.setAttribute('x1', d.x);
+      simIndicator.setAttribute('x2', d.x);
+    }
+    if (simPointMeme) {
+      simPointMeme.setAttribute('cx', d.x);
+      simPointMeme.setAttribute('cy', d.memeY);
+    }
+    if (simPointScience) {
+      simPointScience.setAttribute('cx', d.x);
+      simPointScience.setAttribute('cy', d.scienceY);
+    }
+    if (simMemeTitle) simMemeTitle.textContent = d.memeTitle;
+    if (simMemeDesc) simMemeDesc.textContent = d.memeDesc;
+    if (simScienceTitle) simScienceTitle.textContent = d.scienceTitle;
+    if (simScienceDesc) simScienceDesc.textContent = d.scienceDesc;
+  });
+});
+
+// 10-Year Consumption Simulation controls
+const simConsData = [
+  {
+    x: 60,
+    aY: 30,
+    bY: 180,
+    aTitle: 'Product A (Low Retention) · Month 1',
+    aDesc: '100,000 signups · Massive GPU server bill · 95% one-and-done dropoff · Zero outputs reused.',
+    bTitle: 'Product B (High Utility) · Month 1',
+    bDesc: '1,000 active users · Low $120 operating cost · 240 songs created and published using Music AI.'
+  },
+  {
+    x: 220,
+    aY: 190,
+    bY: 158,
+    aTitle: 'Product A (Low Retention) · Year 1',
+    aDesc: 'Active users down 95% · Server hosting costs exceed revenue · Topic forgotten and churned.',
+    bTitle: 'Product B (High Utility) · Year 1',
+    bDesc: '3,200 active users · 65% monthly retention · Music library actively expanding on FLO Blockchain.'
+  },
+  {
+    x: 420,
+    aY: 190,
+    bY: 95,
+    aTitle: 'Product A (Low Retention) · Year 5',
+    aDesc: 'Project abandoned due to unsustainable compute burn · Net economic value generated: $0.',
+    bTitle: 'Product B (High Utility) · Year 5',
+    bDesc: '18,000 builders · Multi-app ecosystem live · $48,000/yr in recurring swap and network fees.'
+  },
+  {
+    x: 610,
+    aY: 190,
+    bY: 26,
+    aTitle: 'Product A (Low Retention) · Year 10',
+    aDesc: 'Cumulative 10-year economic contribution: $0. A cautionary example of vanity volume.',
+    bTitle: 'Product B (High Utility) · Year 10',
+    bDesc: '10-Year self-funding sustainability achieved · Output revenues completely fund continuous development.'
+  }
+];
+
+const simConsButtons = document.querySelectorAll('.sim-btn-cons');
+const simConsIndicator = document.getElementById('sim-cons-indicator');
+const simConsPointA = document.getElementById('sim-cons-point-a');
+const simConsPointB = document.getElementById('sim-cons-point-b');
+const simConsATitle = document.getElementById('sim-cons-a-title');
+const simConsADesc = document.getElementById('sim-cons-a-desc');
+const simConsBTitle = document.getElementById('sim-cons-b-title');
+const simConsBDesc = document.getElementById('sim-cons-b-desc');
+
+simConsButtons.forEach((btn, idx) => {
+  btn.addEventListener('click', () => {
+    simConsButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const d = simConsData[idx];
+    if (simConsIndicator) {
+      simConsIndicator.setAttribute('x1', d.x);
+      simConsIndicator.setAttribute('x2', d.x);
+    }
+    if (simConsPointA) {
+      simConsPointA.setAttribute('cx', d.x);
+      simConsPointA.setAttribute('cy', d.aY);
+    }
+    if (simConsPointB) {
+      simConsPointB.setAttribute('cx', d.x);
+      simConsPointB.setAttribute('cy', d.bY);
+    }
+    if (simConsATitle) simConsATitle.textContent = d.aTitle;
+    if (simConsADesc) simConsADesc.textContent = d.aDesc;
+    if (simConsBTitle) simConsBTitle.textContent = d.bTitle;
+    if (simConsBDesc) simConsBDesc.textContent = d.bDesc;
+  });
+});
+
+// 10-Year Cashflow Simulation controls
+const simCashData = [
+  {
+    x: 60,
+    aY: 50,
+    bY: 175,
+    aTitle: 'Project A (One-Time Windfall) · Month 1',
+    aDesc: '$100,000 upfront sponsorship · $20,000/mo burn rate · 5 months of operating runway remaining.',
+    bTitle: 'Project B (Recurring Utility) · Month 1',
+    bDesc: '$8,000/mo revenue · $5,000/mo expenses · +$3,000 monthly operating cash surplus (160% self-funding ratio).'
+  },
+  {
+    x: 220,
+    aY: 190,
+    bY: 145,
+    aTitle: 'Project A (One-Time Windfall) · Year 1',
+    aDesc: 'Cash balance hit $0 at Month 5 · Operations frozen · Desperately seeking new external grants or token sales.',
+    bTitle: 'Project B (Recurring Utility) · Year 1',
+    bDesc: 'Subscriber base expands · $18,000/mo recurring income · $8,000 expenses · +$10,000/mo operating surplus reinvested.'
+  },
+  {
+    x: 420,
+    aY: 190,
+    bY: 90,
+    aTitle: 'Project A (One-Time Windfall) · Year 5',
+    aDesc: 'Project abandoned or zombie protocol · 10-year cumulative operating cashflow: $0.',
+    bTitle: 'Project B (Recurring Utility) · Year 5',
+    bDesc: 'Diversified revenue (subs, API calls, swap fees) · $54,000/mo rev · +$36,000/mo cash surplus (300% self-funding ratio).'
+  },
+  {
+    x: 610,
+    aY: 190,
+    bY: 28,
+    aTitle: 'Project A (One-Time Windfall) · Year 10',
+    aDesc: 'Cumulative 10-year economic contribution: $0. A cautionary example of windfall dependency.',
+    bTitle: 'Project B (Recurring Utility) · Year 10',
+    bDesc: 'Self-funding equilibrium reached · Cumulative cash reserves fund 100% of R&D, hosting, and builder bounties indefinitely.'
+  }
+];
+
+const simCashButtons = document.querySelectorAll('.sim-btn-cash');
+const simCashIndicator = document.getElementById('sim-cash-indicator');
+const simCashPointA = document.getElementById('sim-cash-point-a');
+const simCashPointB = document.getElementById('sim-cash-point-b');
+const simCashATitle = document.getElementById('sim-cash-a-title');
+const simCashADesc = document.getElementById('sim-cash-a-desc');
+const simCashBTitle = document.getElementById('sim-cash-b-title');
+const simCashBDesc = document.getElementById('sim-cash-b-desc');
+
+simCashButtons.forEach((btn, idx) => {
+  btn.addEventListener('click', () => {
+    simCashButtons.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const d = simCashData[idx];
+    if (simCashIndicator) {
+      simCashIndicator.setAttribute('x1', d.x);
+      simCashIndicator.setAttribute('x2', d.x);
+    }
+    if (simCashPointA) {
+      simCashPointA.setAttribute('cx', d.x);
+      simCashPointA.setAttribute('cy', d.aY);
+    }
+    if (simCashPointB) {
+      simCashPointB.setAttribute('cx', d.x);
+      simCashPointB.setAttribute('cy', d.bY);
+    }
+    if (simCashATitle) simCashATitle.textContent = d.aTitle;
+    if (simCashADesc) simCashADesc.textContent = d.aDesc;
+    if (simCashBTitle) simCashBTitle.textContent = d.bTitle;
+    if (simCashBDesc) simCashBDesc.textContent = d.bDesc;
+  });
+});
+
+// --- Random Attention & Consumption Simulators ---
+
+function formatSimRow(label, value, points, colorVar) {
+    const color = colorVar ? `style="color: ${colorVar};"` : '';
+    const pointsText = points !== null ? ` (${points.toFixed(1)} pts)` : '';
+    return `
+        <div class="sim-row">
+            <span class="sim-row-label">${label}</span>
+            <span class="sim-row-value" ${color}>${value.toLocaleString()}${pointsText}</span>
+        </div>
+    `;
+}
+
+function formatSimTotal(label, value, colorVar) {
+    return `
+        <div class="sim-total">
+            <span>${label}</span>
+            <span class="sim-row-value" style="color: ${colorVar};">${value}</span>
+        </div>
+    `;
+}
+
+// Attention Simulator
+document.getElementById('simulate-attention-btn').addEventListener('click', () => {
+    const impressions = Math.floor(Math.random() * 990000) + 10000;
+    const high = Math.floor(Math.random() * 500) + 10;
+    const medium = Math.floor(Math.random() * 5000) + 500;
+    const low = Math.floor(Math.random() * 50000) + 5000;
+
+    const highPts = high * 3;
+    const mediumPts = medium * 1;
+    const lowPts = low * 0.1;
+    const totalPts = highPts + mediumPts + lowPts;
+    const score = (totalPts / impressions).toFixed(4);
+
+    let html = '';
+    html += formatSimRow('Total Impressions (Reach)', impressions, null, 'var(--denom)');
+    html += formatSimRow('High-Value (3 pts)', high, highPts, 'var(--attention)');
+    html += formatSimRow('Medium-Value (1 pt)', medium, mediumPts, 'var(--consumption)');
+    html += formatSimRow('Low-Value (0.1 pts)', low, lowPts, 'var(--cashflow)');
+    html += formatSimTotal('Total Points', totalPts.toFixed(1), 'var(--ink)');
+    html += formatSimTotal('Attention Score', score, 'var(--attention)');
+
+    document.getElementById('attention-sim-output').innerHTML = html;
+});
+
+// Consumption Simulator
+document.getElementById('simulate-consumption-btn').addEventListener('click', () => {
+    const uniqueUsers = Math.floor(Math.random() * 9900) + 100;
+    const high = Math.floor(Math.random() * 500) + 10;
+    const medium = Math.floor(Math.random() * 5000) + 500;
+    const low = Math.floor(Math.random() * 50000) + 5000;
+
+    // Rule 5: Genuine Demand Filter (Anti-Bot)
+    let cappedHigh = high;
+    const maxAllowedHigh = uniqueUsers * 5;
+    if (cappedHigh > maxAllowedHigh) cappedHigh = maxAllowedHigh;
+
+    const highPts = cappedHigh * 3;
+    const mediumPts = medium * 1;
+    const lowPts = low * 0.1;
+    const totalPts = highPts + mediumPts + lowPts;
+    const score = (totalPts / uniqueUsers).toFixed(4);
+
+    let html = '';
+    html += formatSimRow('Unique Users (FLO IDs)', uniqueUsers, null, 'var(--denom)');
+    html += formatSimRow('High-Value Inputs (3 pts)', cappedHigh, highPts, 'var(--attention)');
+    html += formatSimRow('Medium-Value Inputs (1 pt)', medium, mediumPts, 'var(--consumption)');
+    html += formatSimRow('Low-Value Inputs (0.1 pts)', low, lowPts, 'var(--cashflow)');
+    html += formatSimTotal('Total Points', totalPts.toFixed(1), 'var(--ink)');
+    html += formatSimTotal('Consumption Score', score, 'var(--consumption)');
+
+    document.getElementById('consumption-sim-output').innerHTML = html;
+});
+
+// Cashflow Simulator
+document.getElementById('simulate-cashflow-btn').addEventListener('click', () => {
+    // Random revenue streams: recurring, semi-recurring, one-time/volatile
+    const recurring = Math.floor(Math.random() * 50000) + 5000;
+    const semiRecurring = Math.floor(Math.random() * 20000) + 1000;
+    const oneTime = Math.floor(Math.random() * 10000) + 500;
+
+    const totalRevenue = recurring + semiRecurring + oneTime;
+
+    // Weighted Cashflow Quality Score (max 3.0 = fully recurring)
+    const weightedPoints = (recurring * 3) + (semiRecurring * 1) + (oneTime * 0.1);
+    const qualityScore = (weightedPoints / totalRevenue).toFixed(4);
+
+    let html = '';
+    html += formatSimRow('Recurring Revenue (3 pts)', recurring, recurring * 3, 'var(--attention)');
+    html += formatSimRow('Semi-Recurring Revenue (1 pt)', semiRecurring, semiRecurring * 1, 'var(--consumption)');
+    html += formatSimRow('One-Time Revenue (0.1 pts)', oneTime, oneTime * 0.1, 'var(--cashflow)');
+    html += formatSimRow('Total Revenue', totalRevenue, null, 'var(--denom)');
+
+    html += formatSimTotal('Cashflow Quality Score (max 3.0)', qualityScore, 'var(--cashflow)');
+
+    document.getElementById('cashflow-sim-output').innerHTML = html;
+});
+
+// --- Full Cycle Pipeline Simulator ---
+document.getElementById('simulate-full-cycle-btn').addEventListener('click', async () => {
+    const runBtn = document.getElementById('simulate-full-cycle-btn');
+    const sleep = ms => new Promise(r => setTimeout(r, ms));
+    const reduced = window.matchMedia('(prefers-reduced-motion:reduce)').matches;
+    const GAP = reduced ? 0 : 650; // pause between stages lighting up
+
+    function lightArrow(id, color) {
+        const arrow = document.getElementById(id);
+        arrow.style.color = color;
+        arrow.style.transform = 'scale(1.25)';
+        arrow.classList.remove('lit');
+        void arrow.offsetWidth; // restart pulse animation
+        arrow.classList.add('lit');
+    }
+    function lightStage(id) {
+        const stage = document.getElementById(id);
+        stage.style.opacity = '1';
+        stage.classList.remove('lit');
+        void stage.offsetWidth; // restart pop animation
+        stage.classList.add('lit');
+    }
+
+    // 1. Reset UI
+    const stages = ['attention', 'consumption', 'cashflow', 'selffunding'];
+    const statusIds = { attention: 'pipe-attn-status', consumption: 'pipe-cons-status', cashflow: 'pipe-cash-status', selffunding: 'pipe-self-status' };
+    const idleLabels = { attention: 'Pending', consumption: 'Pending', cashflow: 'Pending', selffunding: 'Locked' };
+    stages.forEach(s => {
+        const stage = document.getElementById(`pipe-stage-${s}`);
+        stage.style.opacity = '0.4';
+        stage.classList.remove('lit', 'won');
+        const badge = document.getElementById(statusIds[s]);
+        badge.className = 'pipe-status';
+        badge.textContent = idleLabels[s];
+    });
+    ['pipe-attn-numbers', 'pipe-cons-numbers', 'pipe-cash-numbers'].forEach(id => {
+        document.getElementById(id).hidden = true;
+    });
+    ['arrow-1', 'arrow-2', 'arrow-3'].forEach(a => {
+        const arrow = document.getElementById(a);
+        arrow.style.color = 'var(--line)';
+        arrow.style.transform = '';
+        arrow.classList.remove('lit');
+    });
+    runBtn.disabled = true;
+    runBtn.style.opacity = '.5';
+    const done = () => { runBtn.disabled = false; runBtn.style.opacity = ''; };
+
+    //  Winning Mechanism: Generate High Scores and Low Cutoffs
+    // This ensures the pipeline passes, but we add a 20% chance of failure at each stage to look realistic
+    const shouldWin = Math.random() > 0.2; // 80% chance of winning the whole pipeline
+    const winScore = () => (Math.random() * 1.5) + 1.5; 
+    const winCutoff = () => Math.random() * 1.0; 
+
+    // Stage 1: Attention
+    await sleep(reduced ? 0 : 350);
+    const attnScore = shouldWin ? winScore() : Math.random() * 2.5;
+    const attnCutoff = shouldWin ? winCutoff() : Math.random() * 2.0;
+    document.getElementById('pipe-attn-score').textContent = attnScore.toFixed(2);
+    document.getElementById('pipe-attn-cutoff').textContent = attnCutoff.toFixed(2);
+    document.getElementById('pipe-attn-numbers').hidden = false;
+    const attnStatus = document.getElementById('pipe-attn-status');
+    if (attnScore >= attnCutoff) {
+        attnStatus.textContent = 'Passed';
+        attnStatus.className = 'pipe-status pass-attn';
+        lightStage('pipe-stage-attention');
+        lightArrow('arrow-1', 'var(--attention)');
+    } else {
+        attnStatus.textContent = 'Halted';
+        attnStatus.className = 'pipe-status fail';
+        done();
+        return;
+    }
+
+    // Stage 2: Consumption
+    await sleep(GAP);
+    const consScore = shouldWin ? winScore() : Math.random() * 2.5;
+    const consCutoff = shouldWin ? winCutoff() : Math.random() * 2.0;
+    document.getElementById('pipe-cons-score').textContent = consScore.toFixed(2);
+    document.getElementById('pipe-cons-cutoff').textContent = consCutoff.toFixed(2);
+    document.getElementById('pipe-cons-numbers').hidden = false;
+    const consStatus = document.getElementById('pipe-cons-status');
+    if (consScore >= consCutoff) {
+        consStatus.textContent = 'Passed';
+        consStatus.className = 'pipe-status pass-cons';
+        lightStage('pipe-stage-consumption');
+        lightArrow('arrow-2', 'var(--consumption)');
+    } else {
+        consStatus.textContent = 'Halted';
+        consStatus.className = 'pipe-status fail';
+        done();
+        return;
+    }
+
+    // Stage 3: Cashflow
+    await sleep(GAP);
+    const cashScore = shouldWin ? winScore() : Math.random() * 2.5;
+    const cashCutoff = shouldWin ? winCutoff() : Math.random() * 2.0;
+    document.getElementById('pipe-cash-score').textContent = cashScore.toFixed(2);
+    document.getElementById('pipe-cash-cutoff').textContent = cashCutoff.toFixed(2);
+    document.getElementById('pipe-cash-numbers').hidden = false;
+    const cashStatus = document.getElementById('pipe-cash-status');
+    if (cashScore >= cashCutoff) {
+        cashStatus.textContent = 'Passed';
+        cashStatus.className = 'pipe-status pass-cash';
+        lightStage('pipe-stage-cashflow');
+        lightArrow('arrow-3', 'var(--cashflow)');
+    } else {
+        cashStatus.textContent = 'Halted';
+        cashStatus.className = 'pipe-status fail';
+        done();
+        return;
+    }
+
+    // Stage 4: Self-Funding
+    await sleep(GAP);
+    lightStage('pipe-stage-selffunding');
+    document.getElementById('pipe-stage-selffunding').classList.add('won');
+    document.getElementById('pipe-self-status').textContent = 'Self-funding achieved';
+    document.getElementById('pipe-self-status').className = 'pipe-status won-self';
+    done();
+});
+</script>
+</body>
+</html>
